@@ -20,44 +20,38 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.io.File;
-import java.util.jar.*;
+import java.awt.BorderLayout;
 
-public class ApplicationArguments extends Editor
-{
-    private JTextField m_args = new JTextField();
-    
-    public ApplicationArguments()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_args);
-    }
-    
-    public void dataChanged()
-    {
-	m_args.setText(m_model.getArguments());
-    }
+import javax.swing.JTextField;
 
-    public void updateModel()
-    {
-	m_model.setArguments(m_args.getText());
-    }
+import net.charabia.jsmoothgen.application.gui.Editor;
 
-    public String getLabel()
-    {
-	return "ARGUMENTS_LABEL";
-    }
+public class ApplicationArguments extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7786052168844533663L;
+	private JTextField m_args = new JTextField();
 
-    public String getDescription()
-    {
-	return "ARGUMENTS_HELP";
-    }
-        
+	public ApplicationArguments() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_args);
+	}
+
+	public void dataChanged() {
+		m_args.setText(m_model.getArguments());
+	}
+
+	public void updateModel() {
+		m_model.setArguments(m_args.getText());
+	}
+
+	public String getLabel() {
+		return "ARGUMENTS_LABEL";
+	}
+
+	public String getDescription() {
+		return "ARGUMENTS_HELP";
+	}
+
 }

@@ -20,34 +20,35 @@
 
 package net.charabia.jsmoothgen.application.gui.skeleditors;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import java.util.*;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.text.PlainDocument;
 
-public class TextAreaEditor extends SkelPropEditor
-{
-    JTextArea m_comp;
-    JScrollPane m_sp;
-    public TextAreaEditor()
-    {
-	m_comp = new JTextArea(5, 40);
-	PlainDocument doc = new PlainDocument();
-	m_comp.setDocument(doc);
-	m_sp = new JScrollPane(m_comp);
-    }
+public class TextAreaEditor extends SkelPropEditor {
+	JTextArea m_comp;
+	JScrollPane m_sp;
 
-    public java.awt.Component getGUI()
-    {
-	return m_sp;
-    }
+	public TextAreaEditor() {
+		m_comp = new JTextArea(5, 40);
+		PlainDocument doc = new PlainDocument();
+		m_comp.setDocument(doc);
+		m_sp = new JScrollPane(m_comp);
+	}
 
-    public void valueChanged(String val)
-    {
-	m_comp.setText(val);
-    }
+	public java.awt.Component getGUI() {
+		return m_sp;
+	}
 
-    public void set(String o) { m_comp.setText(o); }
-    public String get() {return m_comp.getText(); }
+	public void valueChanged(String val) {
+		m_comp.setText(val);
+	}
+
+	public void set(String o) {
+		m_comp.setText(o);
+	}
+
+	public String get() {
+		return m_comp.getText();
+	}
 
 }

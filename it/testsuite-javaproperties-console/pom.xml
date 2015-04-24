@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.charabia.test</groupId>
+	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins> <plugin>
+                <groupId>com.mindtree.techworks.insight.releng</groupId>
+                <artifactId>maven-jsmooth-plugin</artifactId>
+                <version>0.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jsmoothcompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jsmoothFile>testsuite-javaproperties-console.jsmooth</jsmoothFile>
+                    <setExeName>true</setExeName>
+                    <includeDependencies>true</includeDependencies>
+                </configuration>
+            </plugin>
+             <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>testJavaProperties</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        </plugin>
+        </plugins>
+	</build>
+	
+	<scm>
+		<url>https://github.com/nnn-dev/jsmooth</url>
+		<connection>scm:git:git://github.com/nnn-dev/jsmooth.git</connection>
+		<developerConnection>scm:git:git@github.com/nnn-dev/jsmooth</developerConnection>
+	</scm>
+	
+	<pluginRepositories><pluginRepository>
+        <id>mindtreeinsight</id>
+        <url>http://mindtreeinsight.svn.sourceforge.net/svnroot/mindtreeinsight/maven-repo/trunk/release/</url>
+        <releases>
+           <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>        
+     </pluginRepository></pluginRepositories>
+	
+	<artifactId>testsuite-javaproperties-console</artifactId>
+	<version>@pom.version@</version>
+</project>

@@ -16,52 +16,48 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-*/
+ */
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-import java.util.*;
-import javax.swing.text.*;
-import java.text.*;
-import java.util.regex.*;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.PlainDocument;
 
-public class RegExDocument extends PlainDocument
-{
-    private java.util.regex.Pattern m_pattern;
+public class RegExDocument extends PlainDocument {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1176120793229288988L;
+	private java.util.regex.Pattern m_pattern;
 
-    public RegExDocument(String pattern)
-    {
-	m_pattern = java.util.regex.Pattern.compile(pattern);
-    }
+	public RegExDocument(String pattern) {
+		m_pattern = java.util.regex.Pattern.compile(pattern);
+	}
 
-    
-    public void insertString(int offset, String string, AttributeSet attributes) throws BadLocationException 
-    {
-	if (string == null) 
-	    return;
+	public void insertString(int offset, String string, AttributeSet attributes)
+			throws BadLocationException {
+		if (string == null)
+			return;
 
-	String result;
-	int length = getLength();
-	if (length == 0) 
-	    {
-		result = string;
-	    } 
-	else
-	    {
-		String currentContent = getText(0, length);
-		StringBuffer currentBuffer = new StringBuffer(currentContent);
-		currentBuffer.insert(offset, string);
-		result = currentBuffer.toString();
-	    }
-	
-	java.util.regex.Matcher m = m_pattern.matcher(result);
+		String result;
+		int length = getLength();
+		if (length == 0) {
+			result = string;
+		} else {
+			String currentContent = getText(0, length);
+			StringBuffer currentBuffer = new StringBuffer(currentContent);
+			currentBuffer.insert(offset, string);
+			result = currentBuffer.toString();
+		}
 
-	if (m.matches())
-	    {
-		super.insertString(offset, string, attributes);	    
-	    }
-	
-	java.awt.Toolkit.getDefaultToolkit().beep();
-    }
+		java.util.regex.Matcher m = m_pattern.matcher(result);
 
-}    
+		if (m.matches()) {
+			super.insertString(offset, string, attributes);
+		}
+
+		java.awt.Toolkit.getDefaultToolkit().beep();
+	}
+
+}

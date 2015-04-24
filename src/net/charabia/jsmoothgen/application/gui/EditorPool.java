@@ -20,55 +20,48 @@
 
 package net.charabia.jsmoothgen.application.gui;
 
-import java.util.*;
+import java.util.Hashtable;
 
-public class EditorPool
-{
-    private Hashtable m_classToInstance = new Hashtable();
+public class EditorPool {
+	private Hashtable m_classToInstance = new Hashtable();
 
-    public EditorPool()
-    {
-	add(net.charabia.jsmoothgen.application.gui.editors.SkeletonChooser.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.SkeletonProperties.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.ExecutableName.class );
-	add(net.charabia.jsmoothgen.application.gui.editors.ExecutableIcon.class );
-	add(net.charabia.jsmoothgen.application.gui.editors.CurrentDirectory.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.MainClass.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.ApplicationArguments.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.EmbeddedJar.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.ClassPath.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.MinVersion.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.MaxVersion.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.JVMBundle.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.JVMSearchSequence.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.MaxMemoryHeap.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.InitialMemoryHeap.class);
-	add(net.charabia.jsmoothgen.application.gui.editors.JavaProperties.class);
-    }
+	public EditorPool() {
+		add(net.charabia.jsmoothgen.application.gui.editors.SkeletonChooser.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.SkeletonProperties.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.ExecutableName.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.ExecutableIcon.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.CurrentDirectory.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.MainClass.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.ApplicationArguments.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.EmbeddedJar.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.ClassPath.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.MinVersion.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.MaxVersion.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.JVMBundle.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.JVMSearchSequence.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.MaxMemoryHeap.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.InitialMemoryHeap.class);
+		add(net.charabia.jsmoothgen.application.gui.editors.JavaProperties.class);
+	}
 
-    private void add(Class clzz)
-    {
-	try {
-	    m_classToInstance.put(clzz, clzz.newInstance());
-	} catch (Exception exc)
-	    {
-		exc.printStackTrace();
-	    }
-    }
-    
-    public Editor getInstance(Class clzz)
-    {
-	Editor e = (Editor)m_classToInstance.get(clzz);
-	if (e == null)
-	    {
+	private void add(Class clzz) {
 		try {
-		    e = (Editor)clzz.newInstance();
-		    m_classToInstance.put(clzz, e);
-		} catch (Exception exc)
-		    {
+			m_classToInstance.put(clzz, clzz.newInstance());
+		} catch (Exception exc) {
 			exc.printStackTrace();
-		    }
-	    }
-	return e;
-    }
+		}
+	}
+
+	public Editor getInstance(Class clzz) {
+		Editor e = (Editor) m_classToInstance.get(clzz);
+		if (e == null) {
+			try {
+				e = (Editor) clzz.newInstance();
+				m_classToInstance.put(clzz, e);
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			}
+		}
+		return e;
+	}
 }

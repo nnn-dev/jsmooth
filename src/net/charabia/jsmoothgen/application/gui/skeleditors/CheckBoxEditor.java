@@ -20,40 +20,39 @@
 
 package net.charabia.jsmoothgen.application.gui.skeleditors;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import java.util.*;
-import java.awt.event.*;
+import javax.swing.JCheckBox;
 
-public class CheckBoxEditor extends SkelPropEditor
-{
-    JCheckBox m_comp;
+public class CheckBoxEditor extends SkelPropEditor {
+	JCheckBox m_comp;
 
-    public CheckBoxEditor()
-    {
-	m_comp = new JCheckBox();
-    }
+	public CheckBoxEditor() {
+		m_comp = new JCheckBox();
+	}
 
-    public java.awt.Component getGUI()
-    {
-	return m_comp;
-    }
+	public java.awt.Component getGUI() {
+		return m_comp;
+	}
 
-    public void valueChanged(String val)
-    {
-	if (val.toString().equals("1"))
-	    m_comp.setSelected(true);
-	else
-	    m_comp.setSelected(false);
-    }
+	public void valueChanged(String val) {
+		if (val.toString().equals("1"))
+			m_comp.setSelected(true);
+		else
+			m_comp.setSelected(false);
+	}
 
-    public boolean labelAtLeft()
-    {
-	return false;
-    }
+	public boolean labelAtLeft() {
+		return false;
+	}
 
-    public void set(String o) { if ("1".equals(o)) m_comp.setSelected(true); else m_comp.setSelected(false); }
-    public String get() {return m_comp.isSelected()?"1":"0"; }
+	public void set(String o) {
+		if ("1".equals(o))
+			m_comp.setSelected(true);
+		else
+			m_comp.setSelected(false);
+	}
+
+	public String get() {
+		return m_comp.isSelected() ? "1" : "0";
+	}
 
 }

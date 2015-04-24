@@ -23,108 +23,108 @@ import org.eclipse.swt.widgets.Text;
  * @author Dumon
  */
 public class SkeletonPropertiesDialog extends Dialog {
-    private Text text;
-    private Button check;
-    private List controls = new Vector();
-    private SkeletonPage page;
-    private JSmoothApplication app;
-    
-    public SkeletonPropertiesDialog(SkeletonPage page) {
-        super(page.getApplication().getShell());
-        this.page = page;
-    }
+	private Text text;
+	private Button check;
+	private List controls = new Vector();
+	private SkeletonPage page;
+	private JSmoothApplication app;
 
-    protected Control createDialogArea(Composite parent) {
-        Composite cmpDlgArea = new Composite(parent, SWT.NONE);
-        cmpDlgArea.setLayout(new GridLayout());
+	public SkeletonPropertiesDialog(SkeletonPage page) {
+		super(page.getApplication().getShell());
+		this.page = page;
+	}
 
-        SkeletonProperty[] props = page.getApplication().getSkeletonProperties();
-        for (int i = 0; i < props.length; i++) {
-            System.out.println("[DEBUG] Loading skeleton property: " + props[i].getIdName() + "=" + props[i].getValue());
-        }
-        
-        for (int i = 0; i < props.length; i++) {
-            Control c = createPropertyControl(cmpDlgArea, props[i]);
-            c.setData(props[i]);
-            controls.add(c);
-        }
+	protected Control createDialogArea(Composite parent) {
+		Composite cmpDlgArea = new Composite(parent, SWT.NONE);
+		cmpDlgArea.setLayout(new GridLayout());
 
-        return cmpDlgArea;
-    }
+		SkeletonProperty[] props = page.getApplication()
+				.getSkeletonProperties();
+		for (int i = 0; i < props.length; i++) {
+			System.out.println("[DEBUG] Loading skeleton property: "
+					+ props[i].getIdName() + "=" + props[i].getValue());
+		}
 
-    private Control createPropertyControl(Composite wParent, SkeletonProperty prop) {
-        Group group = null;
-        GridData grid = null;
-        if (prop.getType().equals(SkeletonProperty.TYPE_STRING)) {
-            group = new Group(wParent, SWT.NONE);
-            grid = new GridData(GridData.FILL);
-            grid.widthHint = 400;
-            group.setLayoutData(grid);
-            group.setLayout(new GridLayout());
-            group.setText(prop.getLabel());
+		for (int i = 0; i < props.length; i++) {
+			Control c = createPropertyControl(cmpDlgArea, props[i]);
+			c.setData(props[i]);
+			controls.add(c);
+		}
 
-            text = new Text(group, SWT.SINGLE | SWT.BORDER);
-            grid = new GridData(GridData.FILL_BOTH);
-            text.setLayoutData(grid);
-            text.setText(prop.getValue());
+		return cmpDlgArea;
+	}
 
-            return text;
-        }
-        else if (prop.getType().equals(SkeletonProperty.TYPE_TEXTAREA)) {
-            group = new Group(wParent, SWT.NONE);
-            grid = new GridData(GridData.FILL);
-            grid.widthHint = 400;
-            grid.heightHint = 100;
-            group.setLayoutData(grid);
-            group.setLayout(new GridLayout());
-            group.setText(prop.getLabel());
+	private Control createPropertyControl(Composite wParent,
+			SkeletonProperty prop) {
+		Group group = null;
+		GridData grid = null;
+		if (prop.getType().equals(SkeletonProperty.TYPE_STRING)) {
+			group = new Group(wParent, SWT.NONE);
+			grid = new GridData(GridData.FILL);
+			grid.widthHint = 400;
+			group.setLayoutData(grid);
+			group.setLayout(new GridLayout());
+			group.setText(prop.getLabel());
 
-            text = new Text(group, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-            grid = new GridData(GridData.FILL_BOTH);
-            text.setLayoutData(grid);
-            text.setText(prop.getValue());
+			text = new Text(group, SWT.SINGLE | SWT.BORDER);
+			grid = new GridData(GridData.FILL_BOTH);
+			text.setLayoutData(grid);
+			text.setText(prop.getValue());
 
-            return text;
-        }
-        else if (prop.getType().equals(SkeletonProperty.TYPE_BOOLEAN)) {
-            Button chk = new Button(wParent, SWT.CHECK);
-            chk.setText(prop.getLabel());
-            chk.setSelection("1".equals(prop.getValue()));
+			return text;
+		} else if (prop.getType().equals(SkeletonProperty.TYPE_TEXTAREA)) {
+			group = new Group(wParent, SWT.NONE);
+			grid = new GridData(GridData.FILL);
+			grid.widthHint = 400;
+			grid.heightHint = 100;
+			group.setLayoutData(grid);
+			group.setLayout(new GridLayout());
+			group.setText(prop.getLabel());
 
-            return chk;
-        }
-        else {
-            throw new UnsupportedOperationException("Unknown skeleton property type.");
-        }
-    }
+			text = new Text(group, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL
+					| SWT.V_SCROLL);
+			grid = new GridData(GridData.FILL_BOTH);
+			text.setLayoutData(grid);
+			text.setText(prop.getValue());
 
-    protected void okPressed() {
-        Iterator it = controls.iterator();
-        
-        JSmoothApplication app = page.getApplication();
-        Control ctrl = null;
-        String value = null;
-        SkeletonProperty prop = null;
-        while (it.hasNext()) {
-            ctrl = (Control) it.next();
-            prop = (SkeletonProperty) ctrl.getData();
-            if (prop.getType().equals(SkeletonProperty.TYPE_STRING)) {
-                value = ((Text) ctrl).getText();
-                prop.setValue(value);
-            }
-            else if (prop.getType().equals(SkeletonProperty.TYPE_TEXTAREA)) {
-                value = ((Text) ctrl).getText();
-                prop.setValue(value);
-            }
-            else if (prop.getType().equals(SkeletonProperty.TYPE_BOOLEAN)) {
-                boolean b = ((Button) ctrl).getSelection();
-                value = (b == true) ? "1" : "0";
-                prop.setValue(value);
-            }
-            app.setSkeletonProperty(prop);
-        }
+			return text;
+		} else if (prop.getType().equals(SkeletonProperty.TYPE_BOOLEAN)) {
+			Button chk = new Button(wParent, SWT.CHECK);
+			chk.setText(prop.getLabel());
+			chk.setSelection("1".equals(prop.getValue()));
 
-        super.okPressed();
-    }
+			return chk;
+		} else {
+			throw new UnsupportedOperationException(
+					"Unknown skeleton property type.");
+		}
+	}
+
+	protected void okPressed() {
+		Iterator it = controls.iterator();
+
+		JSmoothApplication app = page.getApplication();
+		Control ctrl = null;
+		String value = null;
+		SkeletonProperty prop = null;
+		while (it.hasNext()) {
+			ctrl = (Control) it.next();
+			prop = (SkeletonProperty) ctrl.getData();
+			if (prop.getType().equals(SkeletonProperty.TYPE_STRING)) {
+				value = ((Text) ctrl).getText();
+				prop.setValue(value);
+			} else if (prop.getType().equals(SkeletonProperty.TYPE_TEXTAREA)) {
+				value = ((Text) ctrl).getText();
+				prop.setValue(value);
+			} else if (prop.getType().equals(SkeletonProperty.TYPE_BOOLEAN)) {
+				boolean b = ((Button) ctrl).getSelection();
+				value = (b == true) ? "1" : "0";
+				prop.setValue(value);
+			}
+			app.setSkeletonProperty(prop);
+		}
+
+		super.okPressed();
+	}
 
 }

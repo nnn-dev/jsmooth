@@ -20,39 +20,33 @@
 
 package net.charabia.jsmoothgen.application.gui.skeleditors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
-import java.lang.reflect.*;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import se.datadosen.component.RiverLayout;
 
-public class SkelPanel extends JPanel
-{
-    static public class BTest
-    {
-	public void setStringTest(String t)
-	    { }
-	public String getStringTest()
-	    { return "TEST"; }
-    }
+public class SkelPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6100552217698442805L;
 
-    public SkelPanel()
-    {
-	setLayout(new RiverLayout());
-    }
+	static public class BTest {
+		public void setStringTest(String t) {
+		}
 
-    public void addBean(SkelPropEditor ed, String label)
-    {
-	add("p left", new JLabel(label));
-	add("tab hfill", ed.getGUI());
-    }
+		public String getStringTest() {
+			return "TEST";
+		}
+	}
+
+	public SkelPanel() {
+		setLayout(new RiverLayout());
+	}
+
+	public void addBean(SkelPropEditor ed, String label) {
+		add("p left", new JLabel(label));
+		add("tab hfill", ed.getGUI());
+	}
 
 }
-

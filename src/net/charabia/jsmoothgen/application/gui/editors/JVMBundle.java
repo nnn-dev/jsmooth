@@ -20,84 +20,82 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
 import java.io.File;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
 
-public class JVMBundle extends Editor
-{
-    private JCheckBox m_checker = new JCheckBox();
-    private FileSelectionTextField m_selector = new FileSelectionTextField();
- 
-    public JVMBundle()
-    {
-	setLayout(new PanelLayout());
-	add(m_checker);
-	add(m_selector);
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 
-	m_selector.setFileChooser(new JDirectoryChooser());
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.FileSelectionTextField;
+import net.charabia.jsmoothgen.application.gui.util.PanelLayout;
 
-	m_checker.setAction(new AbstractAction(Main.local("JVMBUNDLE_CHECKBOX")) {
-		public void actionPerformed(java.awt.event.ActionEvent e)
-		{
-		    m_selector.setEnabled(m_checker.isSelected());
+import com.l2fprod.common.swing.JDirectoryChooser;
+
+public class JVMBundle extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2395191486028916403L;
+	private JCheckBox m_checker = new JCheckBox();
+	private FileSelectionTextField m_selector = new FileSelectionTextField();
+
+	public JVMBundle() {
+		setLayout(new PanelLayout());
+		add(m_checker);
+		add(m_selector);
+
+		m_selector.setFileChooser(new JDirectoryChooser());
+
+		m_checker
+				.setAction(new AbstractAction(Main.local("JVMBUNDLE_CHECKBOX")) {
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = -5307315403218352650L;
+
+					public void actionPerformed(java.awt.event.ActionEvent e) {
+						m_selector.setEnabled(m_checker.isSelected());
+					}
+				});
+
+		if (m_model != null)
+			dataChanged();
+	}
+
+	public void dataChanged() {
+		String bundle = m_model.getBundledJVMPath();
+		if (bundle == null) {
+			m_checker.setSelected(false);
+			m_selector.setBaseDir(getBaseDir());
+			m_selector.setFile(null);
+			m_selector.setEnabled(false);
+		} else {
+			m_checker.setSelected(true);
+			m_selector.setBaseDir(getBaseDir());
+			m_selector.setFile(new java.io.File(bundle));
+			m_selector.setEnabled(true);
 		}
-	    });
+	}
 
-	if (m_model != null)
-	    dataChanged();
-    }
+	public void updateModel() {
+		if (m_checker.isSelected()) {
+			File f = m_selector.getFile();
+			if (f != null)
+				m_model.setBundledJVMPath(f.toString());
+			else
+				m_model.setBundledJVMPath("");
+		} else {
+			m_model.setBundledJVMPath(null);
+		}
+	}
 
-    public void dataChanged()
-    {
-	String bundle = m_model.getBundledJVMPath();
-	if (bundle == null)
-	    {
-		m_checker.setSelected(false);
-		m_selector.setBaseDir(getBaseDir());
-		m_selector.setFile(null);
-		m_selector.setEnabled(false);
-	    }
-	else
-	    {
-		m_checker.setSelected(true);
-		m_selector.setBaseDir(getBaseDir());
-		m_selector.setFile(new java.io.File(bundle));
-		m_selector.setEnabled(true);
-	    }
-    }
+	public String getLabel() {
+		return "JVMBUNDLE_LABEL";
+	}
 
-    public void updateModel()
-    {
-	if (m_checker.isSelected())
-	    {
-		File f = m_selector.getFile();
-		if (f != null)
-		    m_model.setBundledJVMPath(f.toString());
-		else
-		    m_model.setBundledJVMPath("");
-	    }
-	else
-	    {
-		m_model.setBundledJVMPath(null);
-	    }
-    }
+	public String getDescription() {
+		return "JVMBUNDLE_HELP";
+	}
 
-    public String getLabel()
-    {
-	return "JVMBUNDLE_LABEL";
-    }
-
-    public String getDescription()
-    {
-	return "JVMBUNDLE_HELP";
-    }
-    
 }

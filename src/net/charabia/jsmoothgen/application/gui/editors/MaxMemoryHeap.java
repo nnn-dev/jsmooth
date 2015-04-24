@@ -20,103 +20,92 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.io.File;
-import java.util.jar.*;
+import java.awt.BorderLayout;
+import java.util.Vector;
 
-public class MaxMemoryHeap extends Editor
-{
-    private JTextField m_args = new JTextField();
-    private JComboBox  m_units = new JComboBox();
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
 
-    public MaxMemoryHeap()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_args);
-	m_args.setDocument(new RegExDocument("[0-9]+"));
-	m_args.setHorizontalAlignment(JTextField.RIGHT);
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.RegExDocument;
 
-	Vector u = new Vector();
-	u.add(Main.local("UNIT_MB"));
-	u.add(Main.local("UNIT_KB"));
-	u.add(Main.local("UNIT_BYTE"));
-	DefaultComboBoxModel mod = new DefaultComboBoxModel(u);
-	m_units.setModel(mod);
-	add(BorderLayout.EAST, m_units);
-    }
-    
-    public void dataChanged()
-    {
-	setValueCombo(m_model.getMaximumMemoryHeap(), m_args, m_units);
-    }
+public class MaxMemoryHeap extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7973046694505710360L;
+	private JTextField m_args = new JTextField();
+	private JComboBox m_units = new JComboBox();
 
-    public void updateModel()
-    {
-	int value;
+	public MaxMemoryHeap() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_args);
+		m_args.setDocument(new RegExDocument("[0-9]+"));
+		m_args.setHorizontalAlignment(JTextField.RIGHT);
 
-	try {
-	    value = Integer.parseInt(m_args.getText());
-	} catch (Exception exc)
-	    {
-		// nothing here
-		m_model.setInitialMemoryHeap(-1);
-		return;
-	    }
+		Vector u = new Vector();
+		u.add(Main.local("UNIT_MB"));
+		u.add(Main.local("UNIT_KB"));
+		u.add(Main.local("UNIT_BYTE"));
+		DefaultComboBoxModel mod = new DefaultComboBoxModel(u);
+		m_units.setModel(mod);
+		add(BorderLayout.EAST, m_units);
+	}
 
-	switch(m_units.getSelectedIndex())
-	    {
+	public void dataChanged() {
+		setValueCombo(m_model.getMaximumMemoryHeap(), m_args, m_units);
+	}
+
+	public void updateModel() {
+		int value;
+
+		try {
+			value = Integer.parseInt(m_args.getText());
+		} catch (Exception exc) {
+			// nothing here
+			m_model.setInitialMemoryHeap(-1);
+			return;
+		}
+
+		switch (m_units.getSelectedIndex()) {
 		case 0:
-		    if (value>2047)
-			value = 2047;
-		    m_model.setMaximumMemoryHeap(value * 1024 * 1024);
-		    break;
+			if (value > 2047)
+				value = 2047;
+			m_model.setMaximumMemoryHeap(value * 1024 * 1024);
+			break;
 		case 1:
-		    m_model.setMaximumMemoryHeap(value * 1024);
-		    break;
+			m_model.setMaximumMemoryHeap(value * 1024);
+			break;
 		case 2:
-		    m_model.setMaximumMemoryHeap(value);
-		    break;
-	    }
-    }
+			m_model.setMaximumMemoryHeap(value);
+			break;
+		}
+	}
 
-    public String getLabel()
-    {
-	return "MAXMEMORY_LABEL";
-    }
+	public String getLabel() {
+		return "MAXMEMORY_LABEL";
+	}
 
-    public String getDescription()
-    {
-	return "MAXMEMORY_HELP";
-    }
+	public String getDescription() {
+		return "MAXMEMORY_HELP";
+	}
 
-    public void setValueCombo(int value, JTextField num, JComboBox box)
-    {
-	if (value >= (1024 * 1024))
-	    {
-		num.setText( new Integer(value / (1024*1024)).toString());
-		box.setSelectedIndex(0);
-	    }
-	else if (value >= 1024)
-	    {
-		num.setText( new Integer(value / 1024).toString());
-		box.setSelectedIndex(1);		
-	    }
-	else if (value > 0)
-	    {
-		num.setText( new Integer(value).toString());
-		box.setSelectedIndex(2);
-	    }
-	else
-	    {
-		num.setText("");
-		box.setSelectedIndex(0);
-	    }
-    }
-        
+	public void setValueCombo(int value, JTextField num, JComboBox box) {
+		if (value >= (1024 * 1024)) {
+			num.setText(new Integer(value / (1024 * 1024)).toString());
+			box.setSelectedIndex(0);
+		} else if (value >= 1024) {
+			num.setText(new Integer(value / 1024).toString());
+			box.setSelectedIndex(1);
+		} else if (value > 0) {
+			num.setText(new Integer(value).toString());
+			box.setSelectedIndex(2);
+		} else {
+			num.setText("");
+			box.setSelectedIndex(0);
+		}
+	}
+
 }

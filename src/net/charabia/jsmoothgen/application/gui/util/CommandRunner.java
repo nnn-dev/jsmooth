@@ -16,76 +16,71 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-*/
+ */
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  *
  */
-public class CommandRunner
-{
-    static private Vector s_runningprocs = new Vector();
+public class CommandRunner {
+	static private Vector s_runningprocs = new Vector();
 
-    static {
-	Thread t = new ProcessCleaner();
-	t.setDaemon(true);
-	Runtime.getRuntime().addShutdownHook(t);
-    }
-
-    static public class CmdStdReader implements Runnable
-    {
-	InputStream m_in;
-		
-	public CmdStdReader(InputStream in)
-	{
-	    m_in = in;
+	static {
+		Thread t = new ProcessCleaner();
+		t.setDaemon(true);
+		Runtime.getRuntime().addShutdownHook(t);
 	}
-		
-	public void run() 
-	{
-	    try {
-		BufferedReader br = new BufferedReader(new InputStreamReader(m_in));
-		String line = null;
-		while ( (line = br.readLine()) != null)
-		    System.out.println(line);
-	    } catch (Exception exc)
-		{
-		    exc.printStackTrace();
+
+	static public class CmdStdReader implements Runnable {
+		InputStream m_in;
+
+		public CmdStdReader(InputStream in) {
+			m_in = in;
 		}
-	}
-		
-    }
 
-    static public class ProcessCleaner extends Thread
-    {
-	public void run()  
-	{
-	    for (Enumeration e=s_runningprocs.elements(); e.hasMoreElements(); )
-		{
-		    Process p = (Process)e.nextElement();
-		    try {
-			int res = p.exitValue();
-		    } catch (Exception ex)
-			{
-			    p.destroy();
+		public void run() {
+			try {
+				BufferedReader br = new BufferedReader(new InputStreamReader(
+						m_in));
+				String line = null;
+				while ((line = br.readLine()) != null)
+					System.out.println(line);
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			}
+		}
+
+	}
+
+	static public class ProcessCleaner extends Thread {
+		public void run() {
+			for (Enumeration e = s_runningprocs.elements(); e.hasMoreElements();) {
+				Process p = (Process) e.nextElement();
+				try {
+					int res = p.exitValue();
+				} catch (Exception ex) {
+					p.destroy();
+				}
 			}
 		}
 	}
-    }
-	
-    static public void run(String[] cmd, File curdir) throws Exception
-    {
-	Process proc = Runtime.getRuntime().exec(cmd, null, curdir);
-	InputStream stdin = proc.getInputStream();
-	InputStream stderr = proc.getErrorStream();
-		
-	new Thread(new CmdStdReader(stdin)).start();
-	new Thread(new CmdStdReader(stderr)).start();
 
-	s_runningprocs.add(proc);
-    }
+	static public void run(String[] cmd, File curdir) throws Exception {
+		Process proc = Runtime.getRuntime().exec(cmd, null, curdir);
+		InputStream stdin = proc.getInputStream();
+		InputStream stderr = proc.getErrorStream();
+
+		new Thread(new CmdStdReader(stdin)).start();
+		new Thread(new CmdStdReader(stderr)).start();
+
+		s_runningprocs.add(proc);
+	}
 }

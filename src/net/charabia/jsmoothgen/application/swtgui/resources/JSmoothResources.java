@@ -21,53 +21,57 @@ import org.eclipse.swt.widgets.Display;
  * @author Dumon
  */
 public final class JSmoothResources {
-    public static Image IMG_SWITCHER_SKELETON_PAGE;
-    public static Image IMG_SWITCHER_APPLICATION;
-    public static Image IMG_SWITCHER_EXECUTABLE;
-    public static Image IMG_SWITCHER_WELCOME;
-    
-    public static String TEXT_HELP_WELCOME;
+	public static Image IMG_SWITCHER_SKELETON_PAGE;
+	public static Image IMG_SWITCHER_APPLICATION;
+	public static Image IMG_SWITCHER_EXECUTABLE;
+	public static Image IMG_SWITCHER_WELCOME;
 
-    private ResourceBundle bundle;
-    private Display display;
-    
-    public JSmoothResources(Display display) {
-        Class clazz = getClass();
-        URL url = clazz.getResource("jsmooth.properties");
-        try {
-            bundle = new PropertyResourceBundle(url.openStream());
-        } catch (IOException e) {
-            // Shouldn't happen. Ignore.
-        }
-        loadImages(this.display = display);
-        loadText();
-    }
-    
-    public void loadImages(Display display) {
-        System.out.println("[DEBUG] Loading images...");
-        String name = bundle.getString("img.switcher.skeleton");
-        IMG_SWITCHER_SKELETON_PAGE = new Image(display, getClass().getResourceAsStream(name));
-        
-        name = bundle.getString("img.switcher.application");
-        IMG_SWITCHER_APPLICATION = new Image(display, getClass().getResourceAsStream(name));
-        
-        name = bundle.getString("img.switcher.executable");
-        IMG_SWITCHER_EXECUTABLE = new Image(display, getClass().getResourceAsStream(name));
-        
-        name = bundle.getString("img.switcher.welcome");
-        IMG_SWITCHER_WELCOME = new Image(display, getClass().getResourceAsStream(name));
-    }
-    
-    public void loadText() {
-        System.out.println("[DEBUG] Loading text...");
-        InputStream stream = getClass().getResourceAsStream("welcome.xml");
-        byte[] bytes = new byte[5000]; // 50 KB Should be enough.
-        try {
-            stream.read(bytes);
-            TEXT_HELP_WELCOME = (new String(bytes)).trim();
-            stream.close();
-        } catch (IOException e1) {
-            // TODO: Throw some exception at init time.
-        }
-    }
+	public static String TEXT_HELP_WELCOME;
+
+	private ResourceBundle bundle;
+	private Display display;
+
+	public JSmoothResources(Display display) {
+		Class clazz = getClass();
+		URL url = clazz.getResource("jsmooth.properties");
+		try {
+			bundle = new PropertyResourceBundle(url.openStream());
+		} catch (IOException e) {
+			// Shouldn't happen. Ignore.
+		}
+		loadImages(this.display = display);
+		loadText();
+	}
+
+	public void loadImages(Display display) {
+		System.out.println("[DEBUG] Loading images...");
+		String name = bundle.getString("img.switcher.skeleton");
+		IMG_SWITCHER_SKELETON_PAGE = new Image(display, getClass()
+				.getResourceAsStream(name));
+
+		name = bundle.getString("img.switcher.application");
+		IMG_SWITCHER_APPLICATION = new Image(display, getClass()
+				.getResourceAsStream(name));
+
+		name = bundle.getString("img.switcher.executable");
+		IMG_SWITCHER_EXECUTABLE = new Image(display, getClass()
+				.getResourceAsStream(name));
+
+		name = bundle.getString("img.switcher.welcome");
+		IMG_SWITCHER_WELCOME = new Image(display, getClass()
+				.getResourceAsStream(name));
+	}
+
+	public void loadText() {
+		System.out.println("[DEBUG] Loading text...");
+		InputStream stream = getClass().getResourceAsStream("welcome.xml");
+		byte[] bytes = new byte[5000]; // 50 KB Should be enough.
+		try {
+			stream.read(bytes);
+			TEXT_HELP_WELCOME = (new String(bytes)).trim();
+			stream.close();
+		} catch (IOException e1) {
+			// TODO: Throw some exception at init time.
+		}
+	}
 }

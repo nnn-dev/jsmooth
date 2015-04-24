@@ -20,84 +20,73 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.io.File;
-import java.util.jar.*;
+import java.awt.BorderLayout;
 
-public class JavaProperties extends Editor
-{
-    private SortedEditableList m_props = new SortedEditableList();
+import net.charabia.jsmoothgen.application.JavaPropertyPair;
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.util.PropertyEditorDialog;
+import net.charabia.jsmoothgen.application.gui.util.SortedEditableList;
 
-    public class PropEditor implements SortedEditableList.Editor
-    {
-	public Object createNewItem(SortedEditableList selist)
-	{
-	    JavaPropertyPair jpp = new JavaPropertyPair("", "");
-	    PropertyEditorDialog dia = new PropertyEditorDialog(jpp);
+public class JavaProperties extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3938157151408713110L;
+	private SortedEditableList m_props = new SortedEditableList();
 
-	    if (dia.ask() && (jpp.getName().trim().length() > 0))
-		return jpp;
-	    else
-		return null;
+	public class PropEditor implements SortedEditableList.Editor {
+		public Object createNewItem(SortedEditableList selist) {
+			JavaPropertyPair jpp = new JavaPropertyPair("", "");
+			PropertyEditorDialog dia = new PropertyEditorDialog(jpp);
+
+			if (dia.ask() && (jpp.getName().trim().length() > 0))
+				return jpp;
+			else
+				return null;
+		}
+
+		public Object editItem(SortedEditableList selist, Object item) {
+			JavaPropertyPair jpp = (JavaPropertyPair) item;
+			PropertyEditorDialog dia = new PropertyEditorDialog(jpp);
+			dia.setVisible(true);
+			return item;
+		}
+
+		public boolean removeItem(SortedEditableList selist, Object item) {
+			return true;
+		}
 	}
-                
-	public Object editItem(SortedEditableList selist, Object item)
-	{
-	    JavaPropertyPair jpp = (JavaPropertyPair)item;
-	    PropertyEditorDialog dia = new PropertyEditorDialog(jpp);                    
-	    dia.setVisible(true);
-	    return item;
+
+	public JavaProperties() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_props);
+		m_props.setEditor(new PropEditor());
 	}
-                
-	public boolean removeItem(SortedEditableList selist, Object item)
-	{
-	    return true;
+
+	public void dataChanged() {
+		JavaPropertyPair[] props = m_model.getJavaProperties();
+		m_props.setData(props);
 	}
-    }
-    
-    public JavaProperties()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_props);
-	m_props.setEditor(new PropEditor());
-    }
-    
-    public void dataChanged()
-    {
-	JavaPropertyPair[] props = m_model.getJavaProperties();
-	m_props.setData(props);
-    }
 
-    public void updateModel()
-    {
-	Object[] po = m_props.getData();
-	JavaPropertyPair[] props = new JavaPropertyPair[po.length];
-	for (int i=0; i<po.length; i++)
-	    {
-		props[i] = (JavaPropertyPair)po[i];
-	    }
-	m_model.setJavaProperties(props);
-    }
+	public void updateModel() {
+		Object[] po = m_props.getData();
+		JavaPropertyPair[] props = new JavaPropertyPair[po.length];
+		for (int i = 0; i < po.length; i++) {
+			props[i] = (JavaPropertyPair) po[i];
+		}
+		m_model.setJavaProperties(props);
+	}
 
-    public String getLabel()
-    {
-	return "JAVAPROP_LABEL";
-    }
+	public String getLabel() {
+		return "JAVAPROP_LABEL";
+	}
 
-    public String getDescription()
-    {
-	return "JAVAPROP_HELP";
-    }
+	public String getDescription() {
+		return "JAVAPROP_HELP";
+	}
 
-    public boolean needsBigSpace()
-    {
-	return true;
-    }
-        
+	public boolean needsBigSpace() {
+		return true;
+	}
+
 }

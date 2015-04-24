@@ -20,53 +20,47 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import java.awt.BorderLayout;
 
-public class ExecutableName extends Editor
-{
-    private FileSelectionTextField m_selector = new FileSelectionTextField();
- 
-    public ExecutableName()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_selector);
-    }
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.util.FileSelectionTextField;
 
-    public void dataChanged()
-    {
-	if (getBaseDir() != null)
-	    m_selector.setBaseDir(getBaseDir());
+public class ExecutableName extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4307157585671472665L;
+	private FileSelectionTextField m_selector = new FileSelectionTextField();
 
-	if (m_model.getExecutableName() != null)
-	    m_selector.setFile(getAbsolutePath(new java.io.File(m_model.getExecutableName())));
-	else
-	    m_selector.setFile(null);
-    }
+	public ExecutableName() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_selector);
+	}
 
-    public void updateModel()
-    {
-	if (m_selector.getFile() != null)
-	    m_model.setExecutableName(m_selector.getFile().toString());
-	else
-	    m_model.setExecutableName(null);
-    }
+	public void dataChanged() {
+		if (getBaseDir() != null)
+			m_selector.setBaseDir(getBaseDir());
 
-    public String getLabel()
-    {
-	return "EXECUTABLE_LABEL";
-    }
+		if (m_model.getExecutableName() != null)
+			m_selector.setFile(getAbsolutePath(new java.io.File(m_model
+					.getExecutableName())));
+		else
+			m_selector.setFile(null);
+	}
 
-    public String getDescription()
-    {
-	return "EXECUTABLE_HELP";
-    }
-    
+	public void updateModel() {
+		if (m_selector.getFile() != null)
+			m_model.setExecutableName(m_selector.getFile().toString());
+		else
+			m_model.setExecutableName(null);
+	}
+
+	public String getLabel() {
+		return "EXECUTABLE_LABEL";
+	}
+
+	public String getDescription() {
+		return "EXECUTABLE_HELP";
+	}
+
 }

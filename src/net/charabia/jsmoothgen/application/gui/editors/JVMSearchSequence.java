@@ -20,71 +20,62 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.io.File;
-import java.util.jar.*;
+import java.awt.BorderLayout;
+import java.util.Vector;
 
-public class JVMSearchSequence extends Editor
-{
-    private SortedEditableList m_vmSearch = new SortedEditableList();
-    
-    public JVMSearchSequence()
-    {
-        m_vmSearch.setEditableItems(false);
+import net.charabia.jsmoothgen.application.JVMSearchElement;
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.util.SortedEditableList;
 
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_vmSearch);
-    }
-    
-    public void dataChanged()
-    {
-	if (m_model.getJVMSearchPath() == null)
-	    {
-		m_vmSearch.setData(JVMSearchElement.Elements);
-	    } else
-		{
-		    Vector v = new Vector();
-		    String[] els = m_model.getJVMSearchPath();
-		    for (int i=0; i<els.length; i++)
-			{
-			    JVMSearchElement el = JVMSearchElement.getStandardElement(els[i]);
-			    if (el != null)
-				v.add(el);
+public class JVMSearchSequence extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4837139486426530027L;
+	private SortedEditableList m_vmSearch = new SortedEditableList();
+
+	public JVMSearchSequence() {
+		m_vmSearch.setEditableItems(false);
+
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_vmSearch);
+	}
+
+	public void dataChanged() {
+		if (m_model.getJVMSearchPath() == null) {
+			m_vmSearch.setData(JVMSearchElement.Elements);
+		} else {
+			Vector v = new Vector();
+			String[] els = m_model.getJVMSearchPath();
+			for (int i = 0; i < els.length; i++) {
+				JVMSearchElement el = JVMSearchElement
+						.getStandardElement(els[i]);
+				if (el != null)
+					v.add(el);
 			}
-		    m_vmSearch.setData(v.toArray());
+			m_vmSearch.setData(v.toArray());
 		}
-    }
+	}
 
-    public void updateModel()
-    {
-	String[] ids = new String[m_vmSearch.dataSize()];
-	Object[] data = m_vmSearch.getData();
-	for (int i=0; i<ids.length; i++)
-	    {
-		ids[i] = ((JVMSearchElement)data[i]).getId();
-	    }
-	m_model.setJVMSearchPath(ids);
-    }
+	public void updateModel() {
+		String[] ids = new String[m_vmSearch.dataSize()];
+		Object[] data = m_vmSearch.getData();
+		for (int i = 0; i < ids.length; i++) {
+			ids[i] = ((JVMSearchElement) data[i]).getId();
+		}
+		m_model.setJVMSearchPath(ids);
+	}
 
-    public String getLabel()
-    {
-	return "JVMSEARCH_LABEL";
-    }
+	public String getLabel() {
+		return "JVMSEARCH_LABEL";
+	}
 
-    public String getDescription()
-    {
-	return "JVMSEARCH_HELP";
-    }
+	public String getDescription() {
+		return "JVMSEARCH_HELP";
+	}
 
-    public boolean needsBigSpace()
-    {
-	return true;
-    }
-        
+	public boolean needsBigSpace() {
+		return true;
+	}
+
 }

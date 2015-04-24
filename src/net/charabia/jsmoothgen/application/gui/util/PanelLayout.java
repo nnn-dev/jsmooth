@@ -20,166 +20,156 @@
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.util.Hashtable;
 
-public class PanelLayout implements LayoutManager
-{
-    private Dimension m_minimumSize;
-    private Hashtable m_componentToLayoutLengthDescriptor = new Hashtable();
+public class PanelLayout implements LayoutManager {
+	private Dimension m_minimumSize;
+	private Hashtable m_componentToLayoutLengthDescriptor = new Hashtable();
 
-    public PanelLayout() 
-    {
-    }
+	public PanelLayout() {
+	}
 
-    public void addLayoutComponent(String name, Component comp) 
-    {
-	LayoutLengthDescriptor ld = new LayoutLengthDescriptor(name);
-	m_componentToLayoutLengthDescriptor.put(comp, ld);
-    }
+	public void addLayoutComponent(String name, Component comp) {
+		LayoutLengthDescriptor ld = new LayoutLengthDescriptor(name);
+		m_componentToLayoutLengthDescriptor.put(comp, ld);
+	}
 
-    public void removeLayoutComponent(Component comp) 
-    {
-	m_componentToLayoutLengthDescriptor.remove(comp);
-    }
+	public void removeLayoutComponent(Component comp) {
+		m_componentToLayoutLengthDescriptor.remove(comp);
+	}
 
-    private void calculateMinimumSize(Container parent)
-    {
-	m_minimumSize = new Dimension();
-        for (int i = 0; i < parent.getComponentCount(); i++)
-	    {
-		Component element = parent.getComponent(i);
-		if (element.isVisible())
-		    {
-			Dimension eld = element.getPreferredSize();
-			LayoutLengthDescriptor ld = (LayoutLengthDescriptor)m_componentToLayoutLengthDescriptor.get(element);
-			if (ld != null)
-			    eld.height = ld.getLength(parent.getHeight());
+	private void calculateMinimumSize(Container parent) {
+		m_minimumSize = new Dimension();
+		for (int i = 0; i < parent.getComponentCount(); i++) {
+			Component element = parent.getComponent(i);
+			if (element.isVisible()) {
+				Dimension eld = element.getPreferredSize();
+				LayoutLengthDescriptor ld = (LayoutLengthDescriptor) m_componentToLayoutLengthDescriptor
+						.get(element);
+				if (ld != null)
+					eld.height = ld.getLength(parent.getHeight());
 
-			m_minimumSize.height += eld.height;
-			m_minimumSize.width = Math.max(m_minimumSize.width, eld.width);
-		    }
-	    }
-    }
+				m_minimumSize.height += eld.height;
+				m_minimumSize.width = Math.max(m_minimumSize.width, eld.width);
+			}
+		}
+	}
 
-    public Dimension preferredLayoutSize(Container parent) 
-    {
-	return minimumLayoutSize(parent);
-    }
-    
-    /* Required by LayoutManager. */
-    public Dimension minimumLayoutSize(Container parent) 
-    {
-	//	if (m_minimumSize == null)
-	calculateMinimumSize(parent);
+	public Dimension preferredLayoutSize(Container parent) {
+		return minimumLayoutSize(parent);
+	}
 
-        Dimension dim = new Dimension(m_minimumSize);
-	
-        //Always add the container's insets!
-        Insets insets = parent.getInsets();
-        dim.width += insets.left + insets.right;
-        dim.height += insets.top + insets.bottom;
-	
-        return dim;
-    }
+	/* Required by LayoutManager. */
+	public Dimension minimumLayoutSize(Container parent) {
+		// if (m_minimumSize == null)
+		calculateMinimumSize(parent);
 
+		Dimension dim = new Dimension(m_minimumSize);
 
-    public void layoutContainer(Container parent) 
-    {
-        Insets insets = parent.getInsets();
-	int xoffset = insets.left;
-	int yoffset = insets.top;
-	int maxcwidth = parent.getWidth()-(insets.right+insets.left);
-	int maxcheight = parent.getHeight()-insets.bottom;
+		// Always add the container's insets!
+		Insets insets = parent.getInsets();
+		dim.width += insets.left + insets.right;
+		dim.height += insets.top + insets.bottom;
 
-        for (int i = 0; i < parent.getComponentCount(); i++)
-	    {
-		Component element = parent.getComponent(i);
-		if (element.isVisible())
-		    {
-			Dimension eld = element.getPreferredSize();
-			LayoutLengthDescriptor ld = (LayoutLengthDescriptor)m_componentToLayoutLengthDescriptor.get(element);
-			if (ld != null)
-			    eld.height = ld.getLength(parent.getHeight());
+		return dim;
+	}
 
-			if ((eld.height + yoffset) > maxcheight)
-			    eld.height = maxcheight - yoffset;
+	public void layoutContainer(Container parent) {
+		Insets insets = parent.getInsets();
+		int xoffset = insets.left;
+		int yoffset = insets.top;
+		int maxcwidth = parent.getWidth() - (insets.right + insets.left);
+		int maxcheight = parent.getHeight() - insets.bottom;
 
-			element.setBounds(xoffset, yoffset, maxcwidth, eld.height);
-			yoffset += eld.height;
-		    }
-	    }	
-    }
+		for (int i = 0; i < parent.getComponentCount(); i++) {
+			Component element = parent.getComponent(i);
+			if (element.isVisible()) {
+				Dimension eld = element.getPreferredSize();
+				LayoutLengthDescriptor ld = (LayoutLengthDescriptor) m_componentToLayoutLengthDescriptor
+						.get(element);
+				if (ld != null)
+					eld.height = ld.getLength(parent.getHeight());
 
+				if ((eld.height + yoffset) > maxcheight)
+					eld.height = maxcheight - yoffset;
 
-    //     public void layoutContainer(Container parent) {
-    //         Insets insets = parent.getInsets();
-    //         int maxWidth = parent.getWidth() - (insets.left + insets.right);
-    //         int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
-    //         int nComps = parent.getComponentCount();
-    //         int previousWidth = 0, previousHeight = 0;
-    //         int x = 0, y = insets.top;
-    //         int rowh = 0, start = 0;
-    //         int xFudge = 0, yFudge = 0;
-    //         boolean oneColumn = false;
+				element.setBounds(xoffset, yoffset, maxcwidth, eld.height);
+				yoffset += eld.height;
+			}
+		}
+	}
 
-    //         // Go through the components' sizes, if neither
-    //         // preferredLayoutSize nor minimumLayoutSize has
-    //         // been called.
-    //         if (sizeUnknown) {
-    //             setSizes(parent);
-    //         }
+	// public void layoutContainer(Container parent) {
+	// Insets insets = parent.getInsets();
+	// int maxWidth = parent.getWidth() - (insets.left + insets.right);
+	// int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
+	// int nComps = parent.getComponentCount();
+	// int previousWidth = 0, previousHeight = 0;
+	// int x = 0, y = insets.top;
+	// int rowh = 0, start = 0;
+	// int xFudge = 0, yFudge = 0;
+	// boolean oneColumn = false;
 
-    //         if (maxWidth <= minWidth) {
-    //             oneColumn = true;
-    //         }
+	// // Go through the components' sizes, if neither
+	// // preferredLayoutSize nor minimumLayoutSize has
+	// // been called.
+	// if (sizeUnknown) {
+	// setSizes(parent);
+	// }
 
-    //         if (maxWidth != preferredWidth) {
-    //             xFudge = (maxWidth - preferredWidth)/(nComps - 1);
-    //         }
+	// if (maxWidth <= minWidth) {
+	// oneColumn = true;
+	// }
 
-    //         if (maxHeight > preferredHeight) {
-    //             yFudge = (maxHeight - preferredHeight)/(nComps - 1);
-    //         }
+	// if (maxWidth != preferredWidth) {
+	// xFudge = (maxWidth - preferredWidth)/(nComps - 1);
+	// }
 
-    //         for (int i = 0 ; i < nComps ; i++) {
-    //             Component c = parent.getComponent(i);
-    //             if (c.isVisible()) {
-    //                 Dimension d = c.getPreferredSize();
+	// if (maxHeight > preferredHeight) {
+	// yFudge = (maxHeight - preferredHeight)/(nComps - 1);
+	// }
 
-    // 		// increase x and y, if appropriate
-    //                 if (i > 0) {
-    //                     if (!oneColumn) {
-    //                         x += previousWidth/2 + xFudge;
-    //                     }
-    //                     y += previousHeight + vgap + yFudge;
-    //                 }
+	// for (int i = 0 ; i < nComps ; i++) {
+	// Component c = parent.getComponent(i);
+	// if (c.isVisible()) {
+	// Dimension d = c.getPreferredSize();
 
-    //                 // If x is too large,
-    //                 if ((!oneColumn) &&
-    //                     (x + d.width) >
-    //                     (parent.getWidth() - insets.right)) {
-    //                     // reduce x to a reasonable number.
-    //                     x = parent.getWidth()
-    //                         - insets.bottom - d.width;
-    //                 }
+	// // increase x and y, if appropriate
+	// if (i > 0) {
+	// if (!oneColumn) {
+	// x += previousWidth/2 + xFudge;
+	// }
+	// y += previousHeight + vgap + yFudge;
+	// }
 
-    //                 // If y is too large,
-    //                 if ((y + d.height)
-    //                     > (parent.getHeight() - insets.bottom)) {
-    //                     // do nothing.
-    //                     // Another choice would be to do what we do to x.
-    //                 }
+	// // If x is too large,
+	// if ((!oneColumn) &&
+	// (x + d.width) >
+	// (parent.getWidth() - insets.right)) {
+	// // reduce x to a reasonable number.
+	// x = parent.getWidth()
+	// - insets.bottom - d.width;
+	// }
 
-    //                 // Set the component's size and position.
-    //                 c.setBounds(x, y, d.width, d.height);
+	// // If y is too large,
+	// if ((y + d.height)
+	// > (parent.getHeight() - insets.bottom)) {
+	// // do nothing.
+	// // Another choice would be to do what we do to x.
+	// }
 
-    //                 previousWidth = d.width;
-    //                 previousHeight = d.height;
-    //             }
-    //         }
-    //     }
-    
+	// // Set the component's size and position.
+	// c.setBounds(x, y, d.width, d.height);
+
+	// previousWidth = d.width;
+	// previousHeight = d.height;
+	// }
+	// }
+	// }
+
 }

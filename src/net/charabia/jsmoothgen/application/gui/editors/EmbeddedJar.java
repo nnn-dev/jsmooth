@@ -20,78 +20,79 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
 import java.io.File;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
 
-public class EmbeddedJar extends Editor
-{
-    private JCheckBox m_checker = new JCheckBox();
-    private FileSelectionTextField m_selector = new FileSelectionTextField();
- 
-    public EmbeddedJar()
-    {
-	setLayout(new PanelLayout());
-	add(m_checker);
-	add(m_selector);
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 
-	m_checker.setAction(new AbstractAction(Main.local("EMBEDDEDJAR_CHECKBOX")) {
-		public void actionPerformed(java.awt.event.ActionEvent e)
-		{
-// 		    System.out.println("Embedded jar, checkbox action");
-		    m_selector.setEnabled(m_checker.isSelected());
-		    updateModel();
-		}
-	    });
-	
-	m_selector.addListener(new FileSelectionTextField.FileSelected() {
-		public void fileSelected(String filename)
-		{
-		    updateModel();
-		}
-	    });
-    }
-    
-    public void dataChanged()
-    {
-	m_checker.setSelected(m_model.getEmbeddedJar());
-	m_selector.setBaseDir(getBaseDir());
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.FileSelectionTextField;
+import net.charabia.jsmoothgen.application.gui.util.PanelLayout;
 
-	if (m_model.getJarLocation() != null)
-	    m_selector.setFile(new File(m_model.getJarLocation()));
-	else
-	    m_selector.setFile(null);
+public class EmbeddedJar extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -137184149571400586L;
+	private JCheckBox m_checker = new JCheckBox();
+	private FileSelectionTextField m_selector = new FileSelectionTextField();
 
-	if (m_checker.isSelected())
-	    m_selector.setEnabled(true);
-	else
-	    m_selector.setEnabled(false);
-    }
+	public EmbeddedJar() {
+		setLayout(new PanelLayout());
+		add(m_checker);
+		add(m_selector);
 
-    public void updateModel()
-    {
-	m_model.setEmbeddedJar(m_checker.isSelected());
-	if (m_selector.getFile() != null)
-	    m_model.setJarLocation(m_selector.getFile().toString());
-	else
-	    m_model.setJarLocation(null);
-    }
+		m_checker.setAction(new AbstractAction(Main
+				.local("EMBEDDEDJAR_CHECKBOX")) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = 4136006499011551728L;
 
-    public String getLabel()
-    {
-	return "EMBEDDEDJAR_LABEL";
-    }
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				// System.out.println("Embedded jar, checkbox action");
+				m_selector.setEnabled(m_checker.isSelected());
+				updateModel();
+			}
+		});
 
-    public String getDescription()
-    {
-	return "EMBEDDEDJAR_HELP";
-    }
-    
+		m_selector.addListener(new FileSelectionTextField.FileSelected() {
+			public void fileSelected(String filename) {
+				updateModel();
+			}
+		});
+	}
+
+	public void dataChanged() {
+		m_checker.setSelected(m_model.getEmbeddedJar());
+		m_selector.setBaseDir(getBaseDir());
+
+		if (m_model.getJarLocation() != null)
+			m_selector.setFile(new File(m_model.getJarLocation()));
+		else
+			m_selector.setFile(null);
+
+		if (m_checker.isSelected())
+			m_selector.setEnabled(true);
+		else
+			m_selector.setEnabled(false);
+	}
+
+	public void updateModel() {
+		m_model.setEmbeddedJar(m_checker.isSelected());
+		if (m_selector.getFile() != null)
+			m_model.setJarLocation(m_selector.getFile().toString());
+		else
+			m_model.setJarLocation(null);
+	}
+
+	public String getLabel() {
+		return "EMBEDDEDJAR_LABEL";
+	}
+
+	public String getDescription() {
+		return "EMBEDDEDJAR_HELP";
+	}
+
 }

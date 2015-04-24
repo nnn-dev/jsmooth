@@ -16,7 +16,7 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-*/
+ */
 
 /*
  * Test.java
@@ -25,24 +25,25 @@
  */
 
 package net.charabia.jsmoothgen;
-import net.charabia.jsmoothgen.application.*;
 
 import java.io.File;
 
-public class Test
-{
+import net.charabia.jsmoothgen.application.JSmoothModelBean;
+import net.charabia.jsmoothgen.application.JSmoothModelPersistency;
+
+public class Test {
 	/**
-	 * @param args the command line arguments
+	 * @param args
+	 *            the command line arguments
 	 */
-	public static void main(String[] args) throws Exception
-	{
+	public static void main(String[] args) throws Exception {
 		String[] d = new String[2];
 		d[0] = "test";
 		d[1] = "test2";
 		JSmoothModelBean model = new JSmoothModelBean();
 		model.setJarLocation("MyJarLocation");
 		model.setClassPath(d);
-		JSmoothModelPersistency.save(new File("c:/result.xml"), model);	
+		JSmoothModelPersistency.save(new File("c:/result.xml"), model);
 	}
-	
+
 }

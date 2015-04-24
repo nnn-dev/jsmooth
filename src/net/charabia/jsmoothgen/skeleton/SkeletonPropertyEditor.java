@@ -6,172 +6,161 @@
 
 package net.charabia.jsmoothgen.skeleton;
 
-import javax.swing.table.*;
-import javax.swing.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.Point;
+import java.util.Vector;
+
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 /**
- *
- * @author  Rodrigo
+ * 
+ * @author Rodrigo
  */
-public class SkeletonPropertyEditor extends javax.swing.JPanel
-{
+public class SkeletonPropertyEditor extends javax.swing.JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3361546638685244996L;
 	private SkeletonPropertyEditor.SkelPropTableModel m_model;
 	private java.util.Vector m_columnNames = new Vector();
-	
-	
-	public static class SkelPropTableModel extends AbstractTableModel
-	{
+
+	public static class SkelPropTableModel extends AbstractTableModel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7387740004328102737L;
 		Vector m_props = new Vector();
-		
-		public SkelPropTableModel(SkeletonProperty[] props)
-		{
-			for (int i=0; i<props.length; i++)
-			{
+
+		public SkelPropTableModel(SkeletonProperty[] props) {
+			for (int i = 0; i < props.length; i++) {
 				m_props.add(props[i]);
 			}
 		}
-		
-		public SkelPropTableModel()
-		{
+
+		public SkelPropTableModel() {
 			m_props.add(new SkeletonProperty());
 		}
-		
-		public void add(SkeletonProperty prop)
-		{
+
+		public void add(SkeletonProperty prop) {
 			m_props.addElement(prop);
-			fireTableRowsInserted(m_props.size()-1, m_props.size());
+			fireTableRowsInserted(m_props.size() - 1, m_props.size());
 			fireTableStructureChanged();
 		}
-		
-		public void add(SkeletonProperty prop, int row)
-		{
+
+		public void add(SkeletonProperty prop, int row) {
 			m_props.insertElementAt(prop, row);
 			fireTableRowsInserted(row, row);
 			fireTableStructureChanged();
 		}
-		
-		public void removeRow(int row)
-		{
+
+		public void removeRow(int row) {
 			m_props.removeElementAt(row);
 			fireTableRowsDeleted(row, row);
 		}
-		
-		public Class getColumnClass(int columnIndex)
-		{
+
+		public Class getColumnClass(int columnIndex) {
 			return Object.class;
 		}
-		
-		public String getColumnName(int column)
-		{
+
+		public String getColumnName(int column) {
 			return "TEST";
 		}
-		
-		public int getColumnCount()
-		{
+
+		public int getColumnCount() {
 			return 5;
 		}
-		
-		public int getRowCount()
-		{
+
+		public int getRowCount() {
 			return m_props.size();
 		}
-		
-		public boolean isCellEditable(int rowIndex, int columnIndex)
-		{
+
+		public boolean isCellEditable(int rowIndex, int columnIndex) {
 			return true;
 		}
-		
-		public Object getValueAt(int rowIndex, int columnIndex)
-		{
-			SkeletonProperty sp = (SkeletonProperty)m_props.get(rowIndex);
-			switch(columnIndex)
-			{
-				case 0:
-					return sp.getIdName();
-				case 1:
-					return sp.getLabel();
-				case 2:
-					return sp.getDescription();
-				case 3:
-					return sp.getType();
-				case 4:
-					return sp.getValue();
-				default:
-					return "";
-			}
-		}
-		
-		public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-		{
-			SkeletonProperty sp = (SkeletonProperty)m_props.get(rowIndex);
-			switch(columnIndex)
-			{
-				case 0:
-					sp.setIdName(aValue.toString());
-					break;
-				case 1:
-					sp.setLabel(aValue.toString());
-					break;
-				case 2:
-					sp.setDescription(aValue.toString());
-					break;
-				case 3:
-					sp.setType(aValue.toString());
-					break;
-				case 4:
-					sp.setValue(aValue.toString());
-					break;
-			}
-		}
-		
-	}
-	
-	public String getColumnName(int columnIndex)
-	{
-		switch(columnIndex)
-		{
+
+		public Object getValueAt(int rowIndex, int columnIndex) {
+			SkeletonProperty sp = (SkeletonProperty) m_props.get(rowIndex);
+			switch (columnIndex) {
 			case 0:
-				return "Id";
+				return sp.getIdName();
 			case 1:
-				return "Label";
+				return sp.getLabel();
 			case 2:
-				return "Description";
+				return sp.getDescription();
 			case 3:
-				return "Type";
+				return sp.getType();
 			case 4:
-				return "Value";
+				return sp.getValue();
 			default:
-				return "pouet";
+				return "";
+			}
+		}
+
+		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+			SkeletonProperty sp = (SkeletonProperty) m_props.get(rowIndex);
+			switch (columnIndex) {
+			case 0:
+				sp.setIdName(aValue.toString());
+				break;
+			case 1:
+				sp.setLabel(aValue.toString());
+				break;
+			case 2:
+				sp.setDescription(aValue.toString());
+				break;
+			case 3:
+				sp.setType(aValue.toString());
+				break;
+			case 4:
+				sp.setValue(aValue.toString());
+				break;
+			}
+		}
+
+	}
+
+	public String getColumnName(int columnIndex) {
+		switch (columnIndex) {
+		case 0:
+			return "Id";
+		case 1:
+			return "Label";
+		case 2:
+			return "Description";
+		case 3:
+			return "Type";
+		case 4:
+			return "Value";
+		default:
+			return "pouet";
 		}
 	}
-	
+
 	/** Creates new form BeanForm */
-	public SkeletonPropertyEditor()
-	{
+	public SkeletonPropertyEditor() {
 		m_model = new SkeletonPropertyEditor.SkelPropTableModel();
 		initComponents();
 		m_table.setModel(m_model);
 	}
-	
-	
-	public void setModel(SkeletonProperty[] sprops)
-	{
+
+	public void setModel(SkeletonProperty[] sprops) {
 		if (sprops == null)
 			sprops = new SkeletonProperty[0];
-		
-		SkeletonPropertyEditor.SkelPropTableModel model = new SkeletonPropertyEditor.SkelPropTableModel(sprops);
+
+		SkeletonPropertyEditor.SkelPropTableModel model = new SkeletonPropertyEditor.SkelPropTableModel(
+				sprops);
 		m_table.setModel(model);
 		m_model = model;
-		m_table.createDefaultColumnsFromModel() ;
-		
+		m_table.createDefaultColumnsFromModel();
+
 		// model.addColumn("DescriptiveString");
 		// model.addColumn("DescriptiveString");
 		// model.addColumn("DescriptiveString");
 		// model.addColumn("DescriptiveString");
 		// model.addColumn("DescriptiveString");
-		
+
 		TableColumn type = m_table.getColumnModel().getColumn(3);
 		type.setHeaderValue("POUET");
 		JComboBox typeCombo = new JComboBox();
@@ -180,94 +169,78 @@ public class SkeletonPropertyEditor extends javax.swing.JPanel
 		typeCombo.addItem(SkeletonProperty.TYPE_BOOLEAN);
 		type.setCellEditor(new DefaultCellEditor(typeCombo));
 	}
-	
-	/** This method is called from within the constructor to
-	 * initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is
-	 * always regenerated by the Form Editor.
+
+	/**
+	 * This method is called from within the constructor to initialize the form.
+	 * WARNING: Do NOT modify this code. The content of this method is always
+	 * regenerated by the Form Editor.
 	 */
-	private void initComponents()//GEN-BEGIN:initComponents
+	private void initComponents()// GEN-BEGIN:initComponents
 	{
 		m_popupMenu = new javax.swing.JPopupMenu();
 		m_menuAddItem = new javax.swing.JMenuItem();
 		m_menuRemoveItem = new javax.swing.JMenuItem();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		m_table = new javax.swing.JTable();
-		
+
 		m_menuAddItem.setText("Add item");
-		m_menuAddItem.addActionListener(new java.awt.event.ActionListener()
-		{
-			public void actionPerformed(java.awt.event.ActionEvent evt)
-			{
+		m_menuAddItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				m_menuAddItemActionPerformed(evt);
 			}
 		});
-		
+
 		m_popupMenu.add(m_menuAddItem);
-		
+
 		m_menuRemoveItem.setText("RemoveItems");
-		m_menuRemoveItem.addActionListener(new java.awt.event.ActionListener()
-		{
-			public void actionPerformed(java.awt.event.ActionEvent evt)
-			{
+		m_menuRemoveItem.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				m_menuRemoveItemActionPerformed(evt);
 			}
 		});
-		
+
 		m_popupMenu.add(m_menuRemoveItem);
-		
-		
+
 		setLayout(new java.awt.BorderLayout());
-		
+
 		jScrollPane1.setBorder(null);
 		m_table.setModel(new javax.swing.table.DefaultTableModel(
-		new Object [][]
-		{
-			{null, null, null, null},
-			{null, null, null, null},
-			{null, null, null, null},
-			{null, null, null, null}
-		},
-		new String []
-		{
-			"Title 1", "Title 2", "Title 3", "Title 4"
-		}
-		));
+				new Object[][] { { null, null, null, null },
+						{ null, null, null, null }, { null, null, null, null },
+						{ null, null, null, null } }, new String[] { "Title 1",
+						"Title 2", "Title 3", "Title 4" }));
 		m_table.setTableHeader(null);
-		m_table.addMouseListener(new java.awt.event.MouseAdapter()
-		{
-			public void mouseClicked(java.awt.event.MouseEvent evt)
-			{
+		m_table.addMouseListener(new java.awt.event.MouseAdapter() {
+			public void mouseClicked(java.awt.event.MouseEvent evt) {
 				tableMousePressed(evt);
 			}
-			public void mousePressed(java.awt.event.MouseEvent evt)
-			{
+
+			public void mousePressed(java.awt.event.MouseEvent evt) {
 				tableMousePressed(evt);
 			}
-			public void mouseReleased(java.awt.event.MouseEvent evt)
-			{
+
+			public void mouseReleased(java.awt.event.MouseEvent evt) {
 				tableMousePressed(evt);
 			}
 		});
-		
+
 		jScrollPane1.setViewportView(m_table);
-		
+
 		add(jScrollPane1, java.awt.BorderLayout.CENTER);
-		
-	}//GEN-END:initComponents
-	
-	private void m_menuRemoveItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_m_menuRemoveItemActionPerformed
-	{//GEN-HEADEREND:event_m_menuRemoveItemActionPerformed
+
+	}// GEN-END:initComponents
+
+	private void m_menuRemoveItemActionPerformed(java.awt.event.ActionEvent evt)// GEN-FIRST:event_m_menuRemoveItemActionPerformed
+	{// GEN-HEADEREND:event_m_menuRemoveItemActionPerformed
 		// Add your handling code here:
 		int selr = m_table.getSelectedRow();
-		if (selr != -1)
-		{
+		if (selr != -1) {
 			m_model.removeRow(selr);
 		}
-	}//GEN-LAST:event_m_menuRemoveItemActionPerformed
-	
-	private void m_menuAddItemActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_m_menuAddItemActionPerformed
-	{//GEN-HEADEREND:event_m_menuAddItemActionPerformed
+	}// GEN-LAST:event_m_menuRemoveItemActionPerformed
+
+	private void m_menuAddItemActionPerformed(java.awt.event.ActionEvent evt)// GEN-FIRST:event_m_menuAddItemActionPerformed
+	{// GEN-HEADEREND:event_m_menuAddItemActionPerformed
 		// Add your handling code here:
 		SkeletonProperty prop = new SkeletonProperty();
 		int selr = m_table.getSelectedRow();
@@ -275,29 +248,26 @@ public class SkeletonPropertyEditor extends javax.swing.JPanel
 			m_model.add(prop, selr);
 		else
 			m_model.add(prop);
-	}//GEN-LAST:event_m_menuAddItemActionPerformed
-	
-	private void tableMousePressed(java.awt.event.MouseEvent evt)//GEN-FIRST:event_tableMousePressed
-	{//GEN-HEADEREND:event_tableMousePressed
+	}// GEN-LAST:event_m_menuAddItemActionPerformed
+
+	private void tableMousePressed(java.awt.event.MouseEvent evt)// GEN-FIRST:event_tableMousePressed
+	{// GEN-HEADEREND:event_tableMousePressed
 		System.out.println("pressed !");
 		// Add your handling code here:
-		if (evt.isPopupTrigger())
-		{
+		if (evt.isPopupTrigger()) {
 			System.out.println("trigger !");
 			showPopupMenu(evt);
 		}
-	}//GEN-LAST:event_tableMousePressed
-	
-	public void showPopupMenu(java.awt.event.MouseEvent evt)
-	{
+	}// GEN-LAST:event_tableMousePressed
+
+	public void showPopupMenu(java.awt.event.MouseEvent evt) {
 		int r = m_table.rowAtPoint(new Point(evt.getX(), evt.getY()));
-		if (r != -1)
-		{
-			m_table.setRowSelectionInterval(r,r);
+		if (r != -1) {
+			m_table.setRowSelectionInterval(r, r);
 		}
 		m_popupMenu.show(this, evt.getX(), evt.getY());
 	}
-	
+
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	private javax.swing.JScrollPane jScrollPane1;
 	private javax.swing.JMenuItem m_menuAddItem;
@@ -305,5 +275,5 @@ public class SkeletonPropertyEditor extends javax.swing.JPanel
 	private javax.swing.JPopupMenu m_popupMenu;
 	private javax.swing.JTable m_table;
 	// End of variables declaration//GEN-END:variables
-	
+
 }

@@ -20,104 +20,92 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
+import java.awt.BorderLayout;
 import java.io.File;
-import java.util.jar.*;
+import java.util.Iterator;
+import java.util.Vector;
+import java.util.jar.JarFile;
 
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import javax.swing.JButton;
+import javax.swing.JTextField;
 
-public class MainClass extends Editor
-{
-    private JTextField m_classname = new JTextField();
-    private JButton m_chooserButton = new JButton("...");
-    
-    public MainClass()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_classname);
-	add(BorderLayout.EAST, m_chooserButton);
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.ClassChooserDialog;
 
-	m_chooserButton.addActionListener(new java.awt.event.ActionListener()
-	    {
-		public void actionPerformed(java.awt.event.ActionEvent evt)
-		{
-		    displayChooser();
+public class MainClass extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5524059009277651546L;
+	private JTextField m_classname = new JTextField();
+	private JButton m_chooserButton = new JButton("...");
+
+	public MainClass() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_classname);
+		add(BorderLayout.EAST, m_chooserButton);
+
+		m_chooserButton.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				displayChooser();
+			}
+		});
+
+	}
+
+	public void dataChanged() {
+		m_classname.setText(m_model.getMainClassName());
+	}
+
+	public void updateModel() {
+		m_model.setMainClassName(m_classname.getText());
+	}
+
+	public String getLabel() {
+		return "MAINCLASS_LABEL";
+	}
+
+	public String getDescription() {
+		return "MAINCLASS_HELP";
+	}
+
+	protected void displayChooser() {
+		ClassChooserDialog chooser = new ClassChooserDialog(Main.MAIN, true);
+
+		Vector jars = new Vector();
+		if (m_model.getEmbeddedJar() == true) {
+			String ejar = m_model.getJarLocation();
+			if (ejar != null) {
+				File f = getAbsolutePath(new File(ejar));
+				jars.add(f);
+			}
 		}
-	    });
 
-    }
-    
-    public void dataChanged()
-    {
-	m_classname.setText(m_model.getMainClassName());
-    }
+		String[] cp = m_model.getClassPath();
+		if (cp != null) {
+			for (int i = 0; i < cp.length; i++) {
+				jars.add(getAbsolutePath(new File(cp[i])));
+			}
+		}
 
-    public void updateModel()
-    {
-	m_model.setMainClassName(m_classname.getText());
-    }
+		chooser.clear();
+		for (Iterator i = jars.iterator(); i.hasNext();) {
+			File f = (File) i.next();
+			// System.out.println("Adding jar <" + f + ">");
+			try {
+				chooser.addJar(new JarFile(f));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
 
-    public String getLabel()
-    {
-	return "MAINCLASS_LABEL";
-    }
+		chooser.setClassName(m_classname.getText());
+		chooser.setVisible(true);
+		if (chooser.validated()) {
+			String classname = chooser.getClassName();
+			m_classname.setText(classname);
+		}
+	}
 
-    public String getDescription()
-    {
-	return "MAINCLASS_HELP";
-    }
-
-    protected void displayChooser()
-    {
-	ClassChooserDialog chooser = new ClassChooserDialog(Main.MAIN, true);
-
-	Vector jars = new Vector();
-	if (m_model.getEmbeddedJar() == true)
-	    {
-		String ejar = m_model.getJarLocation();
-		if (ejar != null)
-		    {
-			File f = getAbsolutePath(new File(ejar));
-			jars.add(f);
-		    }
-	    }
-
-	String[] cp = m_model.getClassPath();
-	if (cp != null)
-	    {
-		for (int i=0; i<cp.length; i++)
-		    {
-			jars.add(getAbsolutePath(new File(cp[i])));
-		    }
-	    }
-
-	chooser.clear();
-	for (Iterator i=jars.iterator(); i.hasNext(); )
-	    {
-		File f = (File)i.next();
-// 		System.out.println("Adding jar <" + f + ">");
-		try {
-		    chooser.addJar(new JarFile(f));
-		} catch (Exception ex)
-		    {
-			ex.printStackTrace();
-		    }
-	    }
-
-	chooser.setClassName(m_classname.getText());
-	chooser.setVisible(true);
-	if (chooser.validated())
-	    {
-		String classname = chooser.getClassName();
-		m_classname.setText(classname);
-	    }
-    }
-        
 }

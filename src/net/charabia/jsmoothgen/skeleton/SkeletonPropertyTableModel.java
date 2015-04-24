@@ -6,150 +6,136 @@
 
 package net.charabia.jsmoothgen.skeleton;
 
-import java.util.*;
+import java.util.Vector;
+
 /**
- *
- * @author  Rodrigo
+ * 
+ * @author Rodrigo
  */
-public class SkeletonPropertyTableModel extends javax.swing.table.AbstractTableModel
-{
+public class SkeletonPropertyTableModel extends
+		javax.swing.table.AbstractTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1801209250238481286L;
 	private Vector m_props = new Vector();
-	
+
 	/** Creates a new instance of SkeletonPropertyTableModel */
-	public SkeletonPropertyTableModel(SkeletonProperty[] props)
-	{
+	public SkeletonPropertyTableModel(SkeletonProperty[] props) {
 		if (props == null)
 			return;
-		
-		for (int i=0; i<props.length; i++)
-		{
+
+		for (int i = 0; i < props.length; i++) {
 			m_props.add(props[i]);
 		}
 	}
-	
-	public SkeletonPropertyTableModel()
-	{
+
+	public SkeletonPropertyTableModel() {
 		m_props.add(new SkeletonProperty());
 	}
-	
-	public void add(SkeletonProperty prop)
-	{
+
+	public void add(SkeletonProperty prop) {
 		m_props.addElement(prop);
-		fireTableRowsInserted(m_props.size()-1, m_props.size());
+		fireTableRowsInserted(m_props.size() - 1, m_props.size());
 		fireTableStructureChanged();
 	}
-	
-	public void add(SkeletonProperty prop, int row)
-	{
+
+	public void add(SkeletonProperty prop, int row) {
 		m_props.insertElementAt(prop, row);
 		fireTableRowsInserted(row, row);
 		fireTableStructureChanged();
 	}
-	
-	public void removeRow(int row)
-	{
+
+	public void removeRow(int row) {
 		m_props.removeElementAt(row);
 		fireTableRowsDeleted(row, row);
 	}
-	
 
-	public String getColumnName(int column)
-	{
-		switch(column)
-		{
-			case 0:
-				return "Id";
-			case 1:
-				return "GUI Label";
-			case 2:
-				return "Description";
-			case 3:
-				return "Type";
-			case 4:
-				return "Default Values";
-			default:
-				return "";
+	public String getColumnName(int column) {
+		switch (column) {
+		case 0:
+			return "Id";
+		case 1:
+			return "GUI Label";
+		case 2:
+			return "Description";
+		case 3:
+			return "Type";
+		case 4:
+			return "Default Values";
+		default:
+			return "";
 		}
 	}
-	
-	public int getColumnCount()
-	{
+
+	public int getColumnCount() {
 		return 5;
 	}
-	
-	public int getRowCount()
-	{
+
+	public int getRowCount() {
 		return m_props.size();
 	}
-	
-	public boolean isCellEditable(int rowIndex, int columnIndex)
-	{
+
+	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return true;
 	}
-	
-	public Object getValueAt(int rowIndex, int columnIndex)
-	{
-		SkeletonProperty sp = (SkeletonProperty)m_props.get(rowIndex);
-		switch(columnIndex)
-		{
-			case 0:
-				return sp.getIdName();
-			case 1:
-				return sp.getLabel();
-			case 2:
-				return sp.getDescription();
-			case 3:
-				return sp.getType();
-			case 4:
-				return sp.getValue();
-			default:
-				return "";
+
+	public Object getValueAt(int rowIndex, int columnIndex) {
+		SkeletonProperty sp = (SkeletonProperty) m_props.get(rowIndex);
+		switch (columnIndex) {
+		case 0:
+			return sp.getIdName();
+		case 1:
+			return sp.getLabel();
+		case 2:
+			return sp.getDescription();
+		case 3:
+			return sp.getType();
+		case 4:
+			return sp.getValue();
+		default:
+			return "";
 		}
 	}
-	
-	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
-	{
-		SkeletonProperty sp = (SkeletonProperty)m_props.get(rowIndex);
-		switch(columnIndex)
-		{
-			case 0:
-				sp.setIdName(aValue.toString());
-				break;
-			case 1:
-				sp.setLabel(aValue.toString());
-				break;
-			case 2:
-				sp.setDescription(aValue.toString());
-				break;
-			case 3:
-				sp.setType(aValue.toString());
-				break;
-			case 4:
-				sp.setValue(aValue.toString());
-				break;
+
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+		SkeletonProperty sp = (SkeletonProperty) m_props.get(rowIndex);
+		switch (columnIndex) {
+		case 0:
+			sp.setIdName(aValue.toString());
+			break;
+		case 1:
+			sp.setLabel(aValue.toString());
+			break;
+		case 2:
+			sp.setDescription(aValue.toString());
+			break;
+		case 3:
+			sp.setType(aValue.toString());
+			break;
+		case 4:
+			sp.setValue(aValue.toString());
+			break;
 		}
 	}
-	
-	public SkeletonProperty[] getProperties()
-	{
+
+	public SkeletonProperty[] getProperties() {
 		SkeletonProperty[] result = new SkeletonProperty[m_props.size()];
-		for (int i=0; i<result.length; i++)
-		{
-			result[i] = (SkeletonProperty)m_props.get(i);
-		}	
+		for (int i = 0; i < result.length; i++) {
+			result[i] = (SkeletonProperty) m_props.get(i);
+		}
 		return result;
 	}
-	
-	public void swapItems(int offset1, int offset2)
-	{
-		if ((offset1>=0) && (offset1<m_props.size())
-			&& (offset2>=0) && (offset2<m_props.size()))
-		{
+
+	public void swapItems(int offset1, int offset2) {
+		if ((offset1 >= 0) && (offset1 < m_props.size()) && (offset2 >= 0)
+				&& (offset2 < m_props.size())) {
 			Object o1 = m_props.get(offset1);
 			Object o2 = m_props.get(offset2);
 			m_props.set(offset1, o2);
 			m_props.set(offset2, o1);
 		}
-		fireTableRowsUpdated(Math.min(offset1, offset2), Math.max(offset1, offset2));
+		fireTableRowsUpdated(Math.min(offset1, offset2),
+				Math.max(offset1, offset2));
 	}
 }

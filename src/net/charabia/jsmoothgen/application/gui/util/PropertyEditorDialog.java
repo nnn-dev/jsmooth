@@ -16,92 +16,98 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-*/
+ */
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import java.util.*;
-import com.l2fprod.common.swing.*;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+import net.charabia.jsmoothgen.application.JavaPropertyPair;
+import net.charabia.jsmoothgen.application.gui.Main;
+
+import com.l2fprod.common.swing.BaseDialog;
 
 /**
- *
- * @author  Rodrigo
+ * 
+ * @author Rodrigo
  */
-public class PropertyEditorDialog extends BaseDialog
-{
-    private JavaPropertyPair m_prop;
-    private JTextField m_key = new JTextField();
-    private JTextField m_value = new JTextField();
+public class PropertyEditorDialog extends BaseDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2501706416930686887L;
+	private JavaPropertyPair m_prop;
+	private JTextField m_key = new JTextField();
+	private JTextField m_value = new JTextField();
 
-    public PropertyEditorDialog(JavaPropertyPair prop)
-    {
-	super();
-	setTitle(Main.local("JAVAPROP_DIALOG_TITLE"));
-	setModal(true);
-	m_prop = prop;
-	getContentPane().setLayout(new PanelLayout());
+	public PropertyEditorDialog(JavaPropertyPair prop) {
+		super();
+		setTitle(Main.local("JAVAPROP_DIALOG_TITLE"));
+		setModal(true);
+		m_prop = prop;
+		getContentPane().setLayout(new PanelLayout());
 
- 	JLabel eq = new JLabel(" = ");
-	eq.setHorizontalAlignment(JLabel.CENTER);
+		JLabel eq = new JLabel(" = ");
+		eq.setHorizontalAlignment(JLabel.CENTER);
 
-	OptionalHelpPanel keypane = new OptionalHelpPanel();
-	keypane.setLabel(Main.local("JAVAPROP_DIALOG_LABEL"));
-	keypane.setHelpText(Main.local("JAVAPROP_DIALOG_HELP"));
-	keypane.getContentPane().setLayout(new GridBagLayout());
+		OptionalHelpPanel keypane = new OptionalHelpPanel();
+		keypane.setLabel(Main.local("JAVAPROP_DIALOG_LABEL"));
+		keypane.setHelpText(Main.local("JAVAPROP_DIALOG_HELP"));
+		keypane.getContentPane().setLayout(new GridBagLayout());
 
-	GridBagConstraints c = new GridBagConstraints();
-	c.fill = GridBagConstraints.HORIZONTAL;
-	c.gridx = GridBagConstraints.RELATIVE;
-	c.gridy = GridBagConstraints.RELATIVE;
-	c.gridwidth = 1; // GridBagConstraints.RELATIVE;
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = GridBagConstraints.RELATIVE;
+		c.gridy = GridBagConstraints.RELATIVE;
+		c.gridwidth = 1; // GridBagConstraints.RELATIVE;
 
-	c.weightx = 0.5;
-	keypane.getContentPane().add(new JLabel(Main.local("JAVAPROP_NAME")), c);
-	c.weightx = 0.1;
-	keypane.getContentPane().add(new JLabel(""), c);
-	c.weightx = 0.5;
-	c.gridwidth = GridBagConstraints.REMAINDER;
-	keypane.getContentPane().add(new JLabel(Main.local("JAVAPROP_VALUE")), c);
+		c.weightx = 0.5;
+		keypane.getContentPane()
+				.add(new JLabel(Main.local("JAVAPROP_NAME")), c);
+		c.weightx = 0.1;
+		keypane.getContentPane().add(new JLabel(""), c);
+		c.weightx = 0.5;
+		c.gridwidth = GridBagConstraints.REMAINDER;
+		keypane.getContentPane().add(new JLabel(Main.local("JAVAPROP_VALUE")),
+				c);
 
-	c.gridwidth = 1; // GridBagConstraints.RELATIVE;
-	c.weightx = 0.5;
-	keypane.getContentPane().add(m_key, c);
+		c.gridwidth = 1; // GridBagConstraints.RELATIVE;
+		c.weightx = 0.5;
+		keypane.getContentPane().add(m_key, c);
 
-	c.weightx = 0.1;
-	keypane.getContentPane().add(eq, c);
+		c.weightx = 0.1;
+		keypane.getContentPane().add(eq, c);
 
-	c.weightx = 0.5;
-	keypane.getContentPane().add(m_value, c);
+		c.weightx = 0.5;
+		keypane.getContentPane().add(m_value, c);
 
- 	getContentPane().add(keypane);
-	
-	getBanner().setVisible(false);
-	setResizable(false);
-	pack();
+		getContentPane().add(keypane);
 
-	m_key.setText(m_prop.getName());
-	m_value.setText(m_prop.getValue());
-    }
+		getBanner().setVisible(false);
+		setResizable(false);
+		pack();
 
-    public Dimension getMinimumSize()
-    {
-	return new Dimension(400,250);
-    }
+		m_key.setText(m_prop.getName());
+		m_value.setText(m_prop.getValue());
+	}
 
-    public Dimension getPreferredSize()
-    {
-	return new Dimension(400,250);
-    }
+	public Dimension getMinimumSize() {
+		return new Dimension(400, 250);
+	}
 
-    public void ok()
-    {
-	m_prop.setName(m_key.getText());
-	m_prop.setValue(m_value.getText());
-	super.ok();
-    }
+	public Dimension getPreferredSize() {
+		return new Dimension(400, 250);
+	}
+
+	public void ok() {
+		m_prop.setName(m_key.getText());
+		m_prop.setValue(m_value.getText());
+		super.ok();
+	}
 
 }

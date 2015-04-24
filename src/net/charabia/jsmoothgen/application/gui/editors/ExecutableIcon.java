@@ -20,140 +20,117 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.*;
-import java.io.*;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import java.awt.BorderLayout;
+import java.io.File;
 
-public class ExecutableIcon extends Editor
-{
-    private FileSelectionTextField m_selector = new FileSelectionTextField();
-    private JLabel m_iconDisplay = new JLabel("(no image)");
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
-    public ExecutableIcon()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_selector);
-	add(BorderLayout.SOUTH, m_iconDisplay);
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.util.FileSelectionTextField;
 
-	m_iconDisplay.setHorizontalAlignment(JLabel.CENTER);
+public class ExecutableIcon extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4263282854863946825L;
+	private FileSelectionTextField m_selector = new FileSelectionTextField();
+	private JLabel m_iconDisplay = new JLabel("(no image)");
 
-	m_selector.addListener(new FileSelectionTextField.FileSelected() {
-		public void fileSelected(String filename)
-		{
-// 		    System.out.println("new icon: " + filename);
-		    setIconLocation(new File(filename));
-		}
-	    });
-    }
+	public ExecutableIcon() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_selector);
+		add(BorderLayout.SOUTH, m_iconDisplay);
 
-    public void dataChanged()
-    {
-	if (getBaseDir() != null)
-	    m_selector.setBaseDir(getBaseDir());
+		m_iconDisplay.setHorizontalAlignment(JLabel.CENTER);
 
-	if (m_model.getIconLocation() != null)
-	    {
-		m_selector.setFile(getAbsolutePath(new java.io.File(m_model.getIconLocation())));
-		setIconLocation(getAbsolutePath(new java.io.File(m_model.getIconLocation())));
-		
-	    }
-	else
-	    {
-		m_selector.setFile(null);
-		setIconLocation(new File(""));
-	    }
-    }
-
-    public void updateModel()
-    {
-	File f = m_selector.getFile();
-	if (f != null)
-	    m_model.setIconLocation(m_selector.getFile().toString());
-	else
-	    m_model.setIconLocation(null);
-    }
-
-    public String getLabel()
-    {
-	return "ICONLOCATION_LABEL";
-    }
-
-    public String getDescription()
-    {
-	return "ICONLOCATION_HELP";
-    }
-
-    private void setIconLocation(File iconfile)
-    {
-	if (iconfile.isAbsolute() == false)
-	    {
-		iconfile = new File(m_basedir, iconfile.toString());
-	    }
-	ImageIcon icon = null;
-	
-// 	System.out.println("setIconLocation: " + iconfile);
-
-	if (iconfile.toString().toUpperCase().endsWith(".ICO"))
-	    {
-		//
-		// Try to load with our ico codec...
-		//
-		try {
-		    java.awt.image.BufferedImage image = net.charabia.util.codec.IcoCodec.getPreferredImage(iconfile);
-		    if (image != null)
-			{
-			    icon = new ImageIcon(image);
+		m_selector.addListener(new FileSelectionTextField.FileSelected() {
+			public void fileSelected(String filename) {
+				// System.out.println("new icon: " + filename);
+				setIconLocation(new File(filename));
 			}
-		} catch (java.io.IOException exc)
-		    {
-			exc.printStackTrace();
-		    }
-	    }
-	else   // Otherwise try with the standard toolkit functions...
-	    {
-            BufferedImage bufferedImage;
-            try {
-                bufferedImage = ImageIO.read(iconfile);
-                icon = new javax.swing.ImageIcon(bufferedImage, "default icon");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+		});
+	}
 
-	    }
+	public void dataChanged() {
+		if (getBaseDir() != null)
+			m_selector.setBaseDir(getBaseDir());
 
+		if (m_model.getIconLocation() != null) {
+			m_selector.setFile(getAbsolutePath(new java.io.File(m_model
+					.getIconLocation())));
+			setIconLocation(getAbsolutePath(new java.io.File(
+					m_model.getIconLocation())));
 
-	if (icon != null)
-	    {
-		int width = icon.getIconWidth();
-		int height = icon.getIconHeight();
+		} else {
+			m_selector.setFile(null);
+			setIconLocation(new File(""));
+		}
+	}
 
-		m_iconDisplay.setIcon(icon);
-		m_iconDisplay.setText("");
-		m_model.setIconLocation(iconfile.getAbsolutePath());
-		this.validate();
-		this.invalidate();
-	    }
-	else
-	    {
-		m_iconDisplay.setIcon(null);
-		m_iconDisplay.setText("(no image)");
-		m_model.setIconLocation(null);
-	    }
+	public void updateModel() {
+		File f = m_selector.getFile();
+		if (f != null)
+			m_model.setIconLocation(m_selector.getFile().toString());
+		else
+			m_model.setIconLocation(null);
+	}
 
-	doLayout();
-	invalidate();
-	validate();
-	repaint();
-    }
+	public String getLabel() {
+		return "ICONLOCATION_LABEL";
+	}
 
-    
+	public String getDescription() {
+		return "ICONLOCATION_HELP";
+	}
+
+	private void setIconLocation(File iconfile) {
+		if (iconfile.isAbsolute() == false) {
+			iconfile = new File(m_basedir, iconfile.toString());
+		}
+		ImageIcon icon = null;
+
+		// System.out.println("setIconLocation: " + iconfile);
+
+		if (iconfile.toString().toUpperCase().endsWith(".ICO")) {
+			//
+			// Try to load with our ico codec...
+			//
+			try {
+				java.awt.image.BufferedImage[] images = net.charabia.util.codec.IcoCodec
+						.loadImages(iconfile);
+				if ((images != null) && (images.length > 0)) {
+					java.awt.Image img = images[0];
+					icon = new ImageIcon(img);
+				}
+			} catch (java.io.IOException exc) {
+				exc.printStackTrace();
+			}
+		} else // Otherwise try with the standard toolkit functions...
+		{
+			icon = new javax.swing.ImageIcon(iconfile.getAbsolutePath(),
+					"default icon");
+		}
+
+		if (icon != null) {
+			int width = icon.getIconWidth();
+			int height = icon.getIconHeight();
+
+			m_iconDisplay.setIcon(icon);
+			m_iconDisplay.setText("");
+			m_model.setIconLocation(iconfile.getAbsolutePath());
+			this.validate();
+			this.invalidate();
+		} else {
+			m_iconDisplay.setIcon(null);
+			m_iconDisplay.setText("(no image)");
+			m_model.setIconLocation(null);
+		}
+
+		doLayout();
+		invalidate();
+		validate();
+		repaint();
+	}
+
 }

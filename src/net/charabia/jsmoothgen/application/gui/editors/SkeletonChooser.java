@@ -20,143 +20,136 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import java.util.Iterator;
 
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import net.charabia.jsmoothgen.application.JSmoothModelBean;
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.skeleton.SkeletonBean;
 import se.datadosen.component.RiverLayout;
 
-public class SkeletonChooser extends Editor implements JSmoothModelBean.SkeletonChangedListener
-{
-    private JComboBox m_skelcombo = new JComboBox();
-//     private HTMLPane m_skeldesc = new HTMLPane() {
-// 	    public java.awt.Dimension getPreferredSize()
-// 	    {
-// 		java.awt.Dimension d = super.getPreferredSize();
-// 		if (d.height<100)
-// 		    d.height=100;
-// 		return d;
-// 	    }
-// 	};
+public class SkeletonChooser extends Editor implements
+		JSmoothModelBean.SkeletonChangedListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 517958881746857543L;
 
-    private JEditorPane m_skeldesc = new JEditorPane("text/html","<html></html>");
+	private JComboBox m_skelcombo = new JComboBox();
+	// private HTMLPane m_skeldesc = new HTMLPane() {
+	// public java.awt.Dimension getPreferredSize()
+	// {
+	// java.awt.Dimension d = super.getPreferredSize();
+	// if (d.height<100)
+	// d.height=100;
+	// return d;
+	// }
+	// };
 
-    public SkeletonChooser()
-    {
-	//	PanelLayout pl = new PanelLayout();
-	//	setLayout(pl);
-	setLayout(new RiverLayout());
-	m_skelcombo.addItem("<none>");
-	for (Iterator i=Main.SKELETONS.getIteratorNoDebugName(); i.hasNext(); )
-	    {
-		m_skelcombo.addItem(i.next().toString());
-	    }
-	add("hfill", m_skelcombo);
-	JPanel jp = new JPanel();
-	jp.setLayout(new java.awt.BorderLayout());
-	jp.add(new JScrollPane(m_skeldesc) {
-		public java.awt.Dimension getMinimumSize()
-		{
-		    return new java.awt.Dimension(10,100);
+	private JEditorPane m_skeldesc = new JEditorPane("text/html",
+			"<html></html>");
+
+	public SkeletonChooser() {
+		// PanelLayout pl = new PanelLayout();
+		// setLayout(pl);
+		setLayout(new RiverLayout());
+		m_skelcombo.addItem("<none>");
+		for (Iterator i = Main.SKELETONS.getIteratorNoDebugName(); i.hasNext();) {
+			m_skelcombo.addItem(i.next().toString());
 		}
-		public java.awt.Dimension getPreferredSize()
-		{
-		    return new java.awt.Dimension(10,100);
-		}
-	    }, java.awt.BorderLayout.CENTER);
-	add("br hfill", jp);
-	m_skeldesc.setEditable(false);
-	m_skelcombo.addActionListener(new java.awt.event.ActionListener()  {
-		public void actionPerformed(java.awt.event.ActionEvent evt)
-		{
-		    updateModel();
-		    doLayout();
-		    validate();
-		    repaint();
-		}
-	    });
-    }
+		add("hfill", m_skelcombo);
+		JPanel jp = new JPanel();
+		jp.setLayout(new java.awt.BorderLayout());
+		jp.add(new JScrollPane(m_skeldesc) {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -1302464134451877122L;
 
-    private void updateSkeletonData()
-    {
- 	String skelname = (String) m_skelcombo.getSelectedItem();
- 	if (skelname == null)
- 	    return;
-		
- 	SkeletonBean skel = Main.SKELETONS.getSkeleton(skelname);
-	
-//  	System.out.println("SKEL: " + skel.toString());
- 	if (skel != null)
- 	    {
- 		m_skeldesc.setText(Main.local(skel.getDescription()));
-		m_skeldesc.setCaretPosition(0);
- 	    }
-    }
+			public java.awt.Dimension getMinimumSize() {
+				return new java.awt.Dimension(10, 100);
+			}
 
-    public void dataChanged()
-    {
-	String skelname = m_model.getSkeletonName();
-	if (skelname != null)
-	    {
+			public java.awt.Dimension getPreferredSize() {
+				return new java.awt.Dimension(10, 100);
+			}
+		}, java.awt.BorderLayout.CENTER);
+		add("br hfill", jp);
+		m_skeldesc.setEditable(false);
+		m_skelcombo.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				updateModel();
+				doLayout();
+				validate();
+				repaint();
+			}
+		});
+	}
+
+	private void updateSkeletonData() {
+		String skelname = (String) m_skelcombo.getSelectedItem();
+		if (skelname == null)
+			return;
+
 		SkeletonBean skel = Main.SKELETONS.getSkeleton(skelname);
-		if (skel != null)
-		    {
+
+		// System.out.println("SKEL: " + skel.toString());
+		if (skel != null) {
 			m_skeldesc.setText(Main.local(skel.getDescription()));
 			m_skeldesc.setCaretPosition(0);
-			m_skelcombo.setSelectedItem(skelname);
-		    }
-		else
-		    {
+		}
+	}
+
+	public void dataChanged() {
+		String skelname = m_model.getSkeletonName();
+		if (skelname != null) {
+			SkeletonBean skel = Main.SKELETONS.getSkeleton(skelname);
+			if (skel != null) {
+				m_skeldesc.setText(Main.local(skel.getDescription()));
+				m_skeldesc.setCaretPosition(0);
+				m_skelcombo.setSelectedItem(skelname);
+			} else {
+				m_skelcombo.setSelectedItem("");
+				m_skeldesc.setText("");
+				m_skeldesc.setCaretPosition(0);
+			}
+		} else {
 			m_skelcombo.setSelectedItem("");
-			m_skeldesc.setText("");
+			m_skeldesc.setText(Main.local("SKEL_CHOOSER_NONE"));
 			m_skeldesc.setCaretPosition(0);
-		    }
-	    }
-	else
-	    {
-		m_skelcombo.setSelectedItem("");
-		m_skeldesc.setText(Main.local("SKEL_CHOOSER_NONE"));
-		m_skeldesc.setCaretPosition(0);
-	    }
-    }
-    
-    public void updateModel()
-    {
- 	String skelname = (String) m_skelcombo.getSelectedItem();
- 	if (skelname == null)
- 	    return;
+		}
+	}
 
-	if (skelname.equals("<none>"))
-	    skelname = "<none>";
+	public void updateModel() {
+		String skelname = (String) m_skelcombo.getSelectedItem();
+		if (skelname == null)
+			return;
 
-	m_model.setSkeletonName(skelname);
-    }
+		if (skelname.equals("<none>"))
+			skelname = "<none>";
 
+		m_model.setSkeletonName(skelname);
+	}
 
-    public String getLabel()
-    {
-	return "SKELETONCHOOSER_LABEL";
-    }
+	public String getLabel() {
+		return "SKELETONCHOOSER_LABEL";
+	}
 
-    public String getDescription()
-    {
-	return "SKELETONCHOOSER_HELP";
-    }
-    
-    public void skeletonChanged()
-    {
-	dataChanged();
-    }
+	public String getDescription() {
+		return "SKELETONCHOOSER_HELP";
+	}
 
-    public boolean needsBigSpace()
-    {
-	return true;
-    }
+	public void skeletonChanged() {
+		dataChanged();
+	}
+
+	public boolean needsBigSpace() {
+		return true;
+	}
 
 }

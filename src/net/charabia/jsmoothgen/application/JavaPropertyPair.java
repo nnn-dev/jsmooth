@@ -26,47 +26,37 @@
 
 package net.charabia.jsmoothgen.application;
 
-import java.io.*;
-import java.util.*;
 
-public class JavaPropertyPair
-{
-    private String m_name;
-    private String m_value;
+public class JavaPropertyPair {
+	private String m_name;
+	private String m_value;
 
-    public JavaPropertyPair()
-    {
-    }
+	public JavaPropertyPair() {
+	}
 
-    public JavaPropertyPair(String name, String value)
-    {
-	m_name = name;
-	m_value = value;
-    }
-    
-    public void setName(String name)
-    {
-	m_name = name;
-    }
+	public JavaPropertyPair(String name, String value) {
+		m_name = name;
+		m_value = value;
+	}
 
-    public String getName()
-    {
-	return m_name;
-    }
+	public void setName(String name) {
+		m_name = name;
+	}
 
-    public void setValue(String value)
-    {
-	m_value = value;
-    }
+	public String getName() {
+		return m_name;
+	}
 
-    public String getValue()
-    {
-	return m_value;
-    }
+	public void setValue(String value) {
+		m_value = value;
+	}
 
-    public String toString()
-    {
-	return m_name + "=" + m_value;
-    }
+	public String getValue() {
+		return m_value;
+	}
+
+	public String toString() {
+		return m_name + "=" + m_value;
+	}
 
 }

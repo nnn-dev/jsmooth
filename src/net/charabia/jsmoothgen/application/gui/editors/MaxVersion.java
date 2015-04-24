@@ -20,48 +20,40 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.io.File;
-import java.util.jar.*;
+import java.awt.BorderLayout;
 
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import javax.swing.JTextField;
 
-public class MaxVersion extends Editor
-{
-    private JTextField m_args = new JTextField();
-    
-    public MaxVersion()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_args);
-	m_args.setDocument(new RegExDocument("[0-9]+((([.][0-9]+)*)[.]?)"));
-    }
-    
-    public void dataChanged()
-    {
-	m_args.setText(m_model.getMaximumVersion());
-    }
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.util.RegExDocument;
 
-    public void updateModel()
-    {
-	m_model.setMaximumVersion(m_args.getText());
-    }
+public class MaxVersion extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4966530565066312757L;
+	private JTextField m_args = new JTextField();
 
-    public String getLabel()
-    {
-	return "MAXVERSION_LABEL";
-    }
+	public MaxVersion() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_args);
+		m_args.setDocument(new RegExDocument("[0-9]+((([.][0-9]+)*)[.]?)"));
+	}
 
-    public String getDescription()
-    {
-	return "MAXVERSION_HELP";
-    }
-        
+	public void dataChanged() {
+		m_args.setText(m_model.getMaximumVersion());
+	}
+
+	public void updateModel() {
+		m_model.setMaximumVersion(m_args.getText());
+	}
+
+	public String getLabel() {
+		return "MAXVERSION_LABEL";
+	}
+
+	public String getDescription() {
+		return "MAXVERSION_HELP";
+	}
+
 }

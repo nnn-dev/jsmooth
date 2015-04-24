@@ -20,47 +20,39 @@
 
 package net.charabia.jsmoothgen.application.gui.skeleditors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
+import net.charabia.jsmoothgen.skeleton.SkeletonProperty;
 
-import net.charabia.jsmoothgen.skeleton.*;
+abstract public class SkelPropEditor {
+	protected SkeletonProperty m_property;
 
-abstract public class SkelPropEditor
-{
-    protected SkeletonProperty m_property;
-    
-    public void bind(SkeletonProperty prop)
-    {
-	m_property = prop;
-    }
+	public void bind(SkeletonProperty prop) {
+		m_property = prop;
+	}
 
-    public String getIdName()
-    {
-	return m_property.getIdName();
-    }
-    
-    
-    public boolean labelAtLeft()
-    {
-	return true;
-    }
+	public String getIdName() {
+		return m_property.getIdName();
+	}
 
-    public abstract java.awt.Component getGUI();
-    public abstract void valueChanged(String val);
+	public boolean labelAtLeft() {
+		return true;
+	}
 
-    public abstract void set(String o);
-    public abstract String get();
-//     {
-// 	System.out.println("setvalue of " + o + " on " + m_property);
-// 	m_property.setValue(o.toString());
-//     }
+	public abstract java.awt.Component getGUI();
 
-//     {
-// 	System.out.println("getvalue from " + m_property + "=" + m_property.getValue());
-// 	return m_property.getValue();
-//     }
+	public abstract void valueChanged(String val);
+
+	public abstract void set(String o);
+
+	public abstract String get();
+	// {
+	// System.out.println("setvalue of " + o + " on " + m_property);
+	// m_property.setValue(o.toString());
+	// }
+
+	// {
+	// System.out.println("getvalue from " + m_property + "=" +
+	// m_property.getValue());
+	// return m_property.getValue();
+	// }
 
 }
-

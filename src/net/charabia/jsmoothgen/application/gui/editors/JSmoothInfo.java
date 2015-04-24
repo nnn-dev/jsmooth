@@ -20,81 +20,74 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.util.*;
-import java.io.*;
-import se.datadosen.component.RiverLayout;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 
-public class JSmoothInfo extends Editor implements JSmoothModelBean.SkeletonChangedListener
-{
-    //    private JEditorPane m_skeldesc = new JEditorPane("text/html","<html></html>");
-    private HTMLPane m_skeldesc = new HTMLPane();
+import net.charabia.jsmoothgen.application.JSmoothModelBean;
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.HTMLPane;
 
-    public JSmoothInfo()
-    {
-	setLayout(new java.awt.BorderLayout());
-	add(java.awt.BorderLayout.CENTER, m_skeldesc);
-	setBackground(java.awt.Color.red);
-	String text = Main.MAIN.local("JSMOOTH_WELCOME_SCREEN");
-	m_skeldesc.setText(text);
-    }
+public class JSmoothInfo extends Editor implements
+		JSmoothModelBean.SkeletonChangedListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4668776417420663014L;
+	// private JEditorPane m_skeldesc = new
+	// JEditorPane("text/html","<html></html>");
+	private HTMLPane m_skeldesc = new HTMLPane();
 
-    public void dataChanged() { }
+	public JSmoothInfo() {
+		setLayout(new java.awt.BorderLayout());
+		add(java.awt.BorderLayout.CENTER, m_skeldesc);
+		setBackground(java.awt.Color.red);
+		String text = Main.local("JSMOOTH_WELCOME_SCREEN");
+		m_skeldesc.setText(text);
+	}
 
-    private void updateSkeletonData()
-    {
-    }
+	public void dataChanged() {
+	}
 
-    
-    public void updateModel()
-    {
-    }
+	private void updateSkeletonData() {
+	}
 
+	public void updateModel() {
+	}
 
-    public String getLabel()
-    {
-	return "SKELETONCHOOSER_LABEL";
-    }
+	public String getLabel() {
+		return "SKELETONCHOOSER_LABEL";
+	}
 
-    public String getDescription()
-    {
-	return "SKELETONCHOOSER_HELP";
-    }
-    
-    public void skeletonChanged()
-    {
-    }
+	public String getDescription() {
+		return "SKELETONCHOOSER_HELP";
+	}
 
-    public boolean needsBigSpace()
-    {
-	return true;
-    }
+	public void skeletonChanged() {
+	}
 
-    public boolean needsFullSpace()
-    {
-	return true;
-    }
+	public boolean needsBigSpace() {
+		return true;
+	}
 
-    public String readFile(java.io.File f)
-    {
-	StringBuffer buffer = new StringBuffer();
-	try {
-	    FileInputStream fis = new FileInputStream(f);
-	    InputStreamReader isr = new InputStreamReader(fis);
-	    int c;
-	    while ((c=isr.read())!=-1)
-		buffer.append((char)c);
-	    isr.close();
-	    fis.close();
-	} catch (Exception ex)
-	    {
-		ex.printStackTrace();
-	    }
-	return buffer.toString();
-    }
+	public boolean needsFullSpace() {
+		return true;
+	}
+
+	public String readFile(java.io.File f) {
+		StringBuffer buffer = new StringBuffer();
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			InputStreamReader isr = new InputStreamReader(fis);
+			int c;
+			while ((c = isr.read()) != -1)
+				buffer.append((char) c);
+			isr.close();
+			fis.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return buffer.toString();
+	}
 
 }

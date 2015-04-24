@@ -16,45 +16,39 @@
   along with this program; if not, write to the Free Software
   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-*/
+ */
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-public class SimpleFileFilter extends javax.swing.filechooser.FileFilter
-{
+public class SimpleFileFilter extends javax.swing.filechooser.FileFilter {
 	private String m_suffix;
 	private String m_description;
-	
+
 	/** Creates a new instance of SimpleFileFilter */
-	public SimpleFileFilter(String suffix, String desc)
-	{
+	public SimpleFileFilter(String suffix, String desc) {
 		m_suffix = suffix;
 		m_description = desc;
 	}
-	
-	public boolean accept(java.io.File f)
-	{
+
+	public boolean accept(java.io.File f) {
 		String suffix = getSuffix(f);
 		if (suffix.equalsIgnoreCase(m_suffix))
 			return true;
 		if (f.isDirectory())
 			return true;
-		
-		return false;	
+
+		return false;
 	}
-	
-	public String getDescription()
-	{
+
+	public String getDescription() {
 		return m_description;
 	}
-	
-	private String getSuffix(java.io.File f)
-	{
+
+	private String getSuffix(java.io.File f) {
 		String fstr = f.getAbsolutePath();
 		int lastDot = fstr.lastIndexOf('.');
-		if ((lastDot >= 0) && ((lastDot+1) < fstr.length()))
-		{
-			return fstr.substring(lastDot+1);
+		if ((lastDot >= 0) && ((lastDot + 1) < fstr.length())) {
+			return fstr.substring(lastDot + 1);
 		}
 		return "";
 	}

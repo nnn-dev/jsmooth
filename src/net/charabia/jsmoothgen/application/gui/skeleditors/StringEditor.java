@@ -20,38 +20,40 @@
 
 package net.charabia.jsmoothgen.application.gui.skeleditors;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.*;
-import java.util.*;
+import javax.swing.JTextField;
+import javax.swing.text.PlainDocument;
 
-public class StringEditor extends SkelPropEditor
-{
-    JTextField m_comp;
+public class StringEditor extends SkelPropEditor {
+	JTextField m_comp;
 
-    public StringEditor()
-    {
-	m_comp = new JTextField();
-	PlainDocument doc = new PlainDocument();
-// 	doc.addDocumentListener(new DocumentListener() {
-// 				public void insertUpdate(DocumentEvent e) { StringEditor.this.set(m_comp.getText());  }
-// 				public void removeUpdate(DocumentEvent e) { StringEditor.this.set(m_comp.getText());  }
-// 				public void changedUpdate(DocumentEvent e){ StringEditor.this.set(m_comp.getText());  }
-// 	    });
-	m_comp.setDocument(doc);
-    }
+	public StringEditor() {
+		m_comp = new JTextField();
+		PlainDocument doc = new PlainDocument();
+		// doc.addDocumentListener(new DocumentListener() {
+		// public void insertUpdate(DocumentEvent e) {
+		// StringEditor.this.set(m_comp.getText()); }
+		// public void removeUpdate(DocumentEvent e) {
+		// StringEditor.this.set(m_comp.getText()); }
+		// public void changedUpdate(DocumentEvent e){
+		// StringEditor.this.set(m_comp.getText()); }
+		// });
+		m_comp.setDocument(doc);
+	}
 
-    public java.awt.Component getGUI()
-    {
-	return m_comp;
-    }
+	public java.awt.Component getGUI() {
+		return m_comp;
+	}
 
-    public void valueChanged(String val)
-    {
-	m_comp.setText(val);
-    }
+	public void valueChanged(String val) {
+		m_comp.setText(val);
+	}
 
-    public void set(String o) { m_comp.setText(o); }
-    public String get() {return m_comp.getText(); }
+	public void set(String o) {
+		m_comp.setText(o);
+	}
+
+	public String get() {
+		return m_comp.getText();
+	}
 
 }

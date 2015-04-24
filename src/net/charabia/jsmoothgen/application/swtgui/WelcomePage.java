@@ -24,55 +24,55 @@ import org.eclipse.ui.forms.widgets.TableWrapLayout;
  */
 public class WelcomePage extends JSmoothPage {
 
-    public WelcomePage(JSmoothApplication js) {
-        super(js);
-    }
+	public WelcomePage(JSmoothApplication js) {
+		super(js);
+	}
 
-    public Control createPageArea(Composite parent) {
-        Display display = parent.getDisplay();
-        
-        Composite top = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout();
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        top.setLayout(layout);
-        
-        FormToolkit kit = new FormToolkit(parent.getDisplay());
-        Form form = kit.createForm(top);
-        GridData grid = new GridData(GridData.FILL_BOTH);
-        grid.widthHint = 400;
-        form.setLayoutData(grid);
-        form.setText("Welcome to JSmooth !");
-        TableWrapLayout wraplayout = new TableWrapLayout();
-        form.getBody().setLayout(wraplayout);
-        HyperlinkGroup hypergroup = kit.getHyperlinkGroup();
-        hypergroup.setActiveForeground(display.getSystemColor(SWT.COLOR_BLUE));
-        hypergroup.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
-        hypergroup.setHyperlinkUnderlineMode(HyperlinkGroup.UNDERLINE_HOVER);
-        
-        Label label = kit.createSeparator(form.getBody(), SWT.HORIZONTAL);
-        TableWrapData wrapgrid = new TableWrapData(TableWrapData.FILL_GRAB);
-        label.setLayoutData(wrapgrid);
-        
-        FormText text = kit.createFormText(form.getBody(), true);
-        wrapgrid = new TableWrapData(TableWrapData.FILL);
-        text.setLayoutData(wrapgrid);
-        text.setText(JSmoothResources.TEXT_HELP_WELCOME, true, false);
-        
-        return top;
-    }
+	public Control createPageArea(Composite parent) {
+		Display display = parent.getDisplay();
 
-    public boolean apply() {
-        return false;
-    }
+		Composite top = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		top.setLayout(layout);
 
-    protected void configureResources() {
-        setImage(JSmoothResources.IMG_SWITCHER_WELCOME);
-        setToolTip("Welcome");
-    }
+		FormToolkit kit = new FormToolkit(parent.getDisplay());
+		Form form = kit.createForm(top);
+		GridData grid = new GridData(GridData.FILL_BOTH);
+		grid.widthHint = 400;
+		form.setLayoutData(grid);
+		form.setText("Welcome to JSmooth !");
+		TableWrapLayout wraplayout = new TableWrapLayout();
+		form.getBody().setLayout(wraplayout);
+		HyperlinkGroup hypergroup = kit.getHyperlinkGroup();
+		hypergroup.setActiveForeground(display.getSystemColor(SWT.COLOR_BLUE));
+		hypergroup.setForeground(display.getSystemColor(SWT.COLOR_BLUE));
+		hypergroup.setHyperlinkUnderlineMode(HyperlinkGroup.UNDERLINE_HOVER);
 
-    public void load() {
-        // Do nothing.
-    }
+		Label label = kit.createSeparator(form.getBody(), SWT.HORIZONTAL);
+		TableWrapData wrapgrid = new TableWrapData(TableWrapData.FILL_GRAB);
+		label.setLayoutData(wrapgrid);
+
+		FormText text = kit.createFormText(form.getBody(), true);
+		wrapgrid = new TableWrapData(TableWrapData.FILL);
+		text.setLayoutData(wrapgrid);
+		text.setText(JSmoothResources.TEXT_HELP_WELCOME, true, false);
+
+		return top;
+	}
+
+	public boolean apply() {
+		return false;
+	}
+
+	protected void configureResources() {
+		setImage(JSmoothResources.IMG_SWITCHER_WELCOME);
+		setToolTip("Welcome");
+	}
+
+	public void load() {
+		// Do nothing.
+	}
 
 }

@@ -20,11 +20,8 @@
 
 package net.charabia.jsmoothgen.application.gui;
 
-
-public class MainFrame
-{
-    public static void main(String args[])
-    {
-	Main.main(args);
-    }
+public class MainFrame {
+	public static void main(String args[]) {
+		Main.main(args);
+	}
 }

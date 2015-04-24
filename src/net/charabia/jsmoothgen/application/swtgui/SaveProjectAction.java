@@ -3,21 +3,18 @@
  */
 package net.charabia.jsmoothgen.application.swtgui;
 
-
-
 public class SaveProjectAction extends JSmoothAction {
-    private JSmoothApplication js;
-    
-    public SaveProjectAction(JSmoothApplication js) {
-        super(js);
-    }
+	private JSmoothApplication js;
 
-    public boolean run() {
-        if (getApplication().hasProjectFile()) {
-            return getApplication().saveProject();
-        }
-        else {
-            return getApplication().ACTION_SAVE_AS.run();
-        }
-    }
+	public SaveProjectAction(JSmoothApplication js) {
+		super(js);
+	}
+
+	public boolean run() {
+		if (getApplication().hasProjectFile()) {
+			return getApplication().saveProject();
+		} else {
+			return getApplication().ACTION_SAVE_AS.run();
+		}
+	}
 }

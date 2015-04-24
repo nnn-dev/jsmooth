@@ -20,66 +20,60 @@
 
 package net.charabia.jsmoothgen.application.gui;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.io.File;
-import com.l2fprod.common.swing.*;
-import net.charabia.jsmoothgen.application.*;
+import javax.swing.JPanel;
 
-public abstract class Editor extends JPanel
-{
-    protected JSmoothModelBean m_model;
-    protected java.io.File m_basedir;
+import net.charabia.jsmoothgen.application.JSmoothModelBean;
 
-    public void attach(JSmoothModelBean model, java.io.File basedir)
-    {
-	m_model = model;
-	m_basedir = basedir;
-    }
+public abstract class Editor extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3296358532087243181L;
+	protected JSmoothModelBean m_model;
+	protected java.io.File m_basedir;
 
-    public void detach()
-    {
-	m_model = null;
-	m_basedir = null;
-    }
+	public void attach(JSmoothModelBean model, java.io.File basedir) {
+		m_model = model;
+		m_basedir = basedir;
+	}
 
-    protected JSmoothModelBean getModel()
-    {
-	return m_model;
-    }
+	public void detach() {
+		m_model = null;
+		m_basedir = null;
+	}
 
-    protected java.io.File getBaseDir()
-    {
-	return m_basedir;
-    }
+	protected JSmoothModelBean getModel() {
+		return m_model;
+	}
 
-    abstract public void dataChanged();
-    abstract public void updateModel();
+	protected java.io.File getBaseDir() {
+		return m_basedir;
+	}
 
-    abstract public String getLabel();
-    abstract public String getDescription();
+	abstract public void dataChanged();
 
-    public boolean needsBigSpace()
-    {
-	return false;
-    }
+	abstract public void updateModel();
 
-    public boolean needsFullSpace()
-    {
-	return false;
-    }
-    
-    public boolean useDescription()
-    {
-	return true;
-    }
+	abstract public String getLabel();
 
-    protected java.io.File getAbsolutePath(java.io.File f)
-    {
-	if (f.isAbsolute())
-		return f;
-	
-	return new java.io.File(m_basedir.getAbsoluteFile(), f.toString());
-    }
+	abstract public String getDescription();
+
+	public boolean needsBigSpace() {
+		return false;
+	}
+
+	public boolean needsFullSpace() {
+		return false;
+	}
+
+	public boolean useDescription() {
+		return true;
+	}
+
+	protected java.io.File getAbsolutePath(java.io.File f) {
+		if (f.isAbsolute())
+			return f;
+
+		return new java.io.File(m_basedir.getAbsoluteFile(), f.toString());
+	}
 }

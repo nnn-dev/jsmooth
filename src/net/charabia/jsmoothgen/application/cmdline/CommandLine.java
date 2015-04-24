@@ -20,75 +20,71 @@
 
 package net.charabia.jsmoothgen.application.cmdline;
 
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.pe.*;
+import java.io.File;
 
-import java.io.*;
+import net.charabia.jsmoothgen.application.ExeCompiler;
+import net.charabia.jsmoothgen.application.JSmoothModelBean;
+import net.charabia.jsmoothgen.application.JSmoothModelPersistency;
+import net.charabia.jsmoothgen.skeleton.SkeletonBean;
+import net.charabia.jsmoothgen.skeleton.SkeletonList;
 
-public class CommandLine
-{
+public class CommandLine {
 
-    static void printUsage()
-    {
-	System.out.println("Usage: jsmoothc [projectfile.jsmooth]");
- 	System.out.println(" where projectfile.jsmooth is a project file created by JSmoothGen");
-    }
+	static void printUsage() {
+		System.out.println("Usage: jsmoothc [projectfile.jsmooth]");
+		System.out
+				.println(" where projectfile.jsmooth is a project file created by JSmoothGen");
+	}
 
-    public static void main(String[] args)
-    {
-	if (args.length != 1)
-	    {
-		printUsage();
-		System.exit(10);
-	    }
-
-	File prj = new File(args[0]);
-	if (prj.exists() == false)
-	    {
-		prj = new File(prj.toString() + ".jsmooth");
-	    }
-
-	if (prj.exists() == false)
-	    {
-		System.err.println("Error: project file <" + args[0]+"> not found");
-		System.exit(10);
-	    }
-
-	// setup headless mode
-	System.setProperty("java.awt.headless", "true");
-	java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
-
-	String jsmoothbase = System.getProperty("jsmooth.basedir");
-
-	try {
-	    JSmoothModelBean model = JSmoothModelPersistency.load(prj);
-	    File basedir = prj.getParentFile();
-	    File skelbase = new File("skeletons");
-	    if (jsmoothbase != null)
-		{
-		    skelbase = new File(new File(jsmoothbase), "skeletons");
+	public static void main(String[] args) {
+		if (args.length != 1) {
+			printUsage();
+			System.exit(10);
 		}
 
-	    SkeletonList skelList = new SkeletonList(skelbase);
+		File prj = new File(args[0]);
+		if (prj.exists() == false) {
+			prj = new File(prj.toString() + ".jsmooth");
+		}
 
-	    File out = new File(basedir, model.getExecutableName());
-	    
-	    SkeletonBean skel = skelList.getSkeleton(model.getSkeletonName());
-	    File skelroot = skelList.getDirectory(skel);
-	    
-	    ExeCompiler compiler = new ExeCompiler();
-	    compiler.compile(skelroot, skel, basedir, model, out);
+		if (prj.exists() == false) {
+			System.err.println("Error: project file <" + args[0]
+					+ "> not found");
+			System.exit(10);
+		}
 
-	    System.exit(0);
+		// setup headless mode
+		System.setProperty("java.awt.headless", "true");
+		java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
 
-	} catch (Exception exc)
-	    {
-		//	exc.printStackTrace();
-		System.err.println("Incorrect project file!");
-	    }
+		String jsmoothbase = System.getProperty("jsmooth.basedir");
 
-	System.exit(20);
-    }
+		try {
+			JSmoothModelBean model = JSmoothModelPersistency.load(prj);
+			File basedir = prj.getParentFile();
+			File skelbase = new File("skeletons");
+			if (jsmoothbase != null) {
+				skelbase = new File(new File(jsmoothbase), "skeletons");
+			}
+
+			SkeletonList skelList = new SkeletonList(skelbase);
+
+			File out = new File(basedir, model.getExecutableName());
+
+			SkeletonBean skel = skelList.getSkeleton(model.getSkeletonName());
+			File skelroot = skelList.getDirectory(skel);
+
+			ExeCompiler compiler = new ExeCompiler();
+			compiler.compile(skelroot, skel, basedir, model, out);
+
+			System.exit(0);
+
+		} catch (Exception exc) {
+			// exc.printStackTrace();
+			System.err.println("Incorrect project file!");
+		}
+
+		System.exit(20);
+	}
 
 }

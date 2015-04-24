@@ -20,74 +20,63 @@
 
 package net.charabia.jsmoothgen.application.gui.util;
 
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.*;
-import java.util.*;
 
-public class LayoutLengthDescriptor
-{
-    public static final int PIXEL = 1;
-    public static final int PERCENT = 2;
+public class LayoutLengthDescriptor {
+	public static final int PIXEL = 1;
+	public static final int PERCENT = 2;
 
-    private int m_length;
-    private int m_unit;
+	private int m_length;
+	private int m_unit;
 
-    public LayoutLengthDescriptor(String s) 
-    {
-	try {
-	    s = s.trim();
+	public LayoutLengthDescriptor(String s) {
+		try {
+			s = s.trim();
 
-	    StringBuffer len = new StringBuffer();
-	    StringBuffer unit = new StringBuffer();
+			StringBuffer len = new StringBuffer();
+			StringBuffer unit = new StringBuffer();
 
-	    int offset = 0;
+			int offset = 0;
 
-	    for (; offset < s.length(); offset++)
-		{
-		    char c = s.charAt(offset);
-		    if (Character.isDigit(c) == false)
-			break;
-		    len.append(c);
+			for (; offset < s.length(); offset++) {
+				char c = s.charAt(offset);
+				if (Character.isDigit(c) == false)
+					break;
+				len.append(c);
+			}
+
+			for (; offset < s.length(); offset++) {
+				char c = s.charAt(offset);
+				if (Character.isWhitespace(c) == false)
+					break;
+			}
+
+			for (; offset < s.length(); offset++) {
+				char c = s.charAt(offset);
+				unit.append(c);
+			}
+			System.out.println("len: " + len);
+			System.out.println("unit: " + unit);
+
+			m_length = Integer.parseInt(len.toString());
+
+			String sunit = unit.toString();
+			if (sunit.equals("px"))
+				m_unit = PIXEL;
+			else if (sunit.equals("%"))
+				m_unit = PERCENT;
+
+		} catch (Exception exc) {
+			throw new RuntimeException("Error parsing " + s);
 		}
+	}
 
-	    for (; offset < s.length(); offset++)
-		{
-		    char c = s.charAt(offset);
-		    if (Character.isWhitespace(c) == false)
-			break;
-		}
+	public int getLength(int totalLength) {
+		if (m_unit == PIXEL)
+			return m_length;
+		if (totalLength == 0)
+			return 0;
 
-	    for (; offset < s.length(); offset++)
-		{
-		    char c = s.charAt(offset);
-		    unit.append(c);
-		}
-	    System.out.println("len: " + len);
-	    System.out.println("unit: " + unit);
-
-	    m_length = Integer.parseInt(len.toString());
-
-	    String sunit = unit.toString();
-	    if (sunit.equals("px"))
-		m_unit = PIXEL;
-	    else if (sunit.equals("%"))
-		m_unit = PERCENT;
-
-	} catch (Exception exc)
-	    {
-		throw new RuntimeException("Error parsing " + s);
-	    }
-    }
-
-    public int getLength(int totalLength)
-    {
-	if (m_unit == PIXEL)
-	    return m_length;
-	if (totalLength == 0)
-	    return 0;
-
-	return (totalLength * 100) / totalLength;
-    }
+		return (totalLength * 100) / totalLength;
+	}
 
 }

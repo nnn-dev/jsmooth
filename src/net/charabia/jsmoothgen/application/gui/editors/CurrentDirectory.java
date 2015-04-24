@@ -20,98 +20,96 @@
 
 package net.charabia.jsmoothgen.application.gui.editors;
 
-import net.charabia.jsmoothgen.skeleton.*;
-import net.charabia.jsmoothgen.application.*;
-import net.charabia.jsmoothgen.application.gui.*;
-import net.charabia.jsmoothgen.application.gui.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import com.l2fprod.common.swing.*;
-import com.l2fprod.common.propertysheet.*;
+import java.awt.BorderLayout;
 
-public class CurrentDirectory extends Editor
-{
-    private FileSelectionTextField m_selector = new FileSelectionTextField();
-    private JCheckBox m_forceExePath = new JCheckBox();
-    
-    public CurrentDirectory()
-    {
-	setLayout(new BorderLayout());
-	add(BorderLayout.CENTER, m_selector);
-	
-	JPanel jpc = new JPanel();
-	jpc.setLayout(new BorderLayout());
-	jpc.add(BorderLayout.WEST, m_forceExePath);
-	jpc.add(BorderLayout.CENTER, new HelpButton(Main.local("CURRENTDIR_FORCEEXEPATH_HELP")));
-	add(BorderLayout.SOUTH, jpc);
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
+import javax.swing.JPanel;
 
-	m_forceExePath.setAction(new AbstractAction(Main.local("CURRENTDIR_FORCEEXEPATH")) {
-		public void actionPerformed(java.awt.event.ActionEvent e)
-		{
-		    if (m_forceExePath.isSelected())
+import net.charabia.jsmoothgen.application.gui.Editor;
+import net.charabia.jsmoothgen.application.gui.Main;
+import net.charabia.jsmoothgen.application.gui.util.FileSelectionTextField;
+import net.charabia.jsmoothgen.application.gui.util.HelpButton;
+
+import com.l2fprod.common.swing.JDirectoryChooser;
+
+public class CurrentDirectory extends Editor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3788568495735515022L;
+	private FileSelectionTextField m_selector = new FileSelectionTextField();
+	private JCheckBox m_forceExePath = new JCheckBox();
+
+	public CurrentDirectory() {
+		setLayout(new BorderLayout());
+		add(BorderLayout.CENTER, m_selector);
+
+		JPanel jpc = new JPanel();
+		jpc.setLayout(new BorderLayout());
+		jpc.add(BorderLayout.WEST, m_forceExePath);
+		jpc.add(BorderLayout.CENTER,
+				new HelpButton(Main.local("CURRENTDIR_FORCEEXEPATH_HELP")));
+		add(BorderLayout.SOUTH, jpc);
+
+		m_forceExePath.setAction(new AbstractAction(Main
+				.local("CURRENTDIR_FORCEEXEPATH")) {
+			/**
+					 * 
+					 */
+					private static final long serialVersionUID = -3632703241591741261L;
+
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				if (m_forceExePath.isSelected())
+					m_selector.setEnabled(false);
+				else
+					m_selector.setEnabled(true);
+			}
+		});
+
+		m_selector.setFileChooser(new JDirectoryChooser());
+	}
+
+	public void dataChanged() {
+		// System.out.println("CurDir, basedir=" + getBaseDir());
+		m_selector.setBaseDir(getBaseDir());
+		String dir = m_model.getCurrentDirectory();
+		// System.out.println("Cur Directory data changed: " + dir);
+
+		if ("${EXECUTABLEPATH}".equals(dir)) {
 			m_selector.setEnabled(false);
-		    else
+			m_forceExePath.setSelected(true);
+		} else {
+			m_forceExePath.setSelected(false);
 			m_selector.setEnabled(true);
+
+			if ((dir != null) && (dir.trim().length() > 0)) {
+				m_selector.setFile(new java.io.File(dir));
+			} else {
+				m_selector.setFile(null);
+			}
 		}
-	    });
+	}
 
-	m_selector.setFileChooser(new JDirectoryChooser());
-    }
-    
-    public void dataChanged()
-    {
-// 	System.out.println("CurDir, basedir=" + getBaseDir());
-	m_selector.setBaseDir(getBaseDir());
-	String dir = m_model.getCurrentDirectory();
-// 	System.out.println("Cur Directory data changed: " + dir);
+	public void updateModel() {
+		// System.out.println("UPDATE MODEL: " + m_selector.getFile());
 
-	if ("${EXECUTABLEPATH}".equals(dir))
-	    {
-		m_selector.setEnabled(false);
-		m_forceExePath.setSelected(true);
-	    }
-	else
-	    {
-		m_forceExePath.setSelected(false);
-		m_selector.setEnabled(true);
+		if (m_forceExePath.isSelected()) {
+			m_model.setCurrentDirectory("${EXECUTABLEPATH}");
+		} else {
+			if (m_selector.getFile() != null)
+				m_model.setCurrentDirectory(m_selector.getFile().toString());
+			else
+				m_model.setCurrentDirectory(null);
+		}
+	}
 
-		if ((dir != null) && (dir.trim().length()>0))
-		    {
-			m_selector.setFile(new java.io.File(dir));
-		    }
-		else
-		    {
-			m_selector.setFile(null);
-		    }
-	    }
-    }
+	public String getLabel() {
+		return "CURRENTDIR_LABEL";
+	}
 
-    public void updateModel()
-    {
-// 	System.out.println("UPDATE MODEL: " + m_selector.getFile());
+	public String getDescription() {
+		return "CURRENTDIR_HELP";
+	}
 
-	if (m_forceExePath.isSelected())
-	    {
-		m_model.setCurrentDirectory("${EXECUTABLEPATH}");
-	    }
-	else
-	    {
-		if (m_selector.getFile() != null)
-		    m_model.setCurrentDirectory(m_selector.getFile().toString());
-		else
-		    m_model.setCurrentDirectory(null);
-	    }
-    }
-
-    public String getLabel()
-    {
-	return "CURRENTDIR_LABEL";
-    }
-
-    public String getDescription()
-    {
-	return "CURRENTDIR_HELP";
-    }
-        
 }

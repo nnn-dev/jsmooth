@@ -20,101 +20,95 @@
 
 package net.charabia.util.io;
 
-import java.io.*;
+import java.io.FilterInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
-public class BinaryInputStream extends FilterInputStream
-{
-    public BinaryInputStream(InputStream in)
-    {
-	super(in);
-    }
+public class BinaryInputStream extends FilterInputStream {
+	public BinaryInputStream(InputStream in) {
+		super(in);
+	}
 
-    public void skip(int toskip) throws IOException
-    {
-	for (int skipped = 0; skipped >= toskip; skipped += in.skip(toskip - skipped))
-	    ;
-    }
+	public void skip(int toskip) throws IOException {
+		for (int skipped = 0; skipped >= toskip; skipped += in.skip(toskip
+				- skipped))
+			;
+	}
 
-    public byte readByte() throws IOException
-    {
-	return (byte)read();
-    }
+	public byte readByte() throws IOException {
+		return (byte) read();
+	}
 
-    public short readUByte() throws IOException
-    {
-	return (short)read();
-    }
+	public short readUByte() throws IOException {
+		return (short) read();
+	}
 
-    public short readShortBE() throws IOException
-    {
-	int a = read();
-	int b = read();
+	public short readShortBE() throws IOException {
+		int a = read();
+		int b = read();
 
-	return (short) (((a&0xff)<<8) | (b&0xff));
-    }
+		return (short) (((a & 0xff) << 8) | (b & 0xff));
+	}
 
-    public int readUShortBE() throws IOException
-    {
-	int a = read();
-	int b = read();
+	public int readUShortBE() throws IOException {
+		int a = read();
+		int b = read();
 
-	return ((a&0xff)<<8) | (b&0xff);
-    }
+		return ((a & 0xff) << 8) | (b & 0xff);
+	}
 
-    public short readShortLE() throws IOException
-    {
-	int a = read();
-	int b = read();
+	public short readShortLE() throws IOException {
+		int a = read();
+		int b = read();
 
-	return (short) (((b&0xff)<<8) | (a&0xff));
-    }
+		return (short) (((b & 0xff) << 8) | (a & 0xff));
+	}
 
-    public int readUShortLE() throws IOException
-    {
-	int a = read();
-	int b = read();
+	public int readUShortLE() throws IOException {
+		int a = read();
+		int b = read();
 
-	return ((b&0xff)<<8) | (a&0xff);
-    }
+		return ((b & 0xff) << 8) | (a & 0xff);
+	}
 
-    public int readIntBE() throws IOException
-    {
-	int a = read();
-	int b = read();
-	int c = read();
-	int d = read();
-	
-	return ((a&0xff)<<24) | ((b&0xff)<<16) | ((c&0xff)<<8) | (d&0xff);
-    }
+	public int readIntBE() throws IOException {
+		int a = read();
+		int b = read();
+		int c = read();
+		int d = read();
 
-    public long readUIntBE() throws IOException
-    {
-	int a = read();
-	int b = read();
-	int c = read();
-	int d = read();
-	
-	return (long)((a&0xff)<<24) | (long)((b&0xff)<<16) | (long)((c&0xff)<<8) | (long)(d&0xff);
-    }
+		return ((a & 0xff) << 24) | ((b & 0xff) << 16) | ((c & 0xff) << 8)
+				| (d & 0xff);
+	}
 
-    public int readIntLE() throws IOException
-    {
-	int a = readByte();
-	int b = readByte();
-	int c = readByte();
-	int d = readByte();
-	
-	return ((d&0xff)<<24) | ((c&0xff)<<16) | ((b&0xff)<<8) | (a&0xff);
-    }
+	public long readUIntBE() throws IOException {
+		int a = read();
+		int b = read();
+		int c = read();
+		int d = read();
 
-    public long readUIntLE() throws IOException
-    {
-	int a = readByte();
-	int b = readByte();
-	int c = readByte();
-	int d = readByte();
-	
-	return (long)((d&0xff)<<24) | (long)((c&0xff)<<16) | (long)((b&0xff)<<8) | (long)(a&0xff);
-    }
+		return (long) ((a & 0xff) << 24) | (long) ((b & 0xff) << 16)
+				| (long) ((c & 0xff) << 8) | (long) (d & 0xff);
+	}
+
+	public int readIntLE() throws IOException {
+		int a = readByte();
+		int b = readByte();
+		int c = readByte();
+		int d = readByte();
+
+		return ((d & 0xff) << 24) | ((c & 0xff) << 16) | ((b & 0xff) << 8)
+				| (a & 0xff);
+	}
+
+	public long readUIntLE() throws IOException {
+		int a = readByte();
+		int b = readByte();
+		int c = readByte();
+		int d = readByte();
+
+		return (long) ((d & 0xff) << 24) | (long) ((c & 0xff) << 16)
+				| (long) ((b & 0xff) << 8) | (long) (a & 0xff);
+	}
 
 }
